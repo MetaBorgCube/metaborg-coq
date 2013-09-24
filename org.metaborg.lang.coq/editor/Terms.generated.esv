@@ -1,0 +1,60 @@
+
+module Terms.generated
+
+completions
+  completion template Term : "forall Binder , Term" =
+    "forall " <Binder:Binder> " , " <Term:Term>                              
+  completion template Term : "fun Binder => Term" =
+    "fun " <Binder:Binder> " => " <Term:Term>                                  
+  completion template Term : "fix FixBodies" =
+    "fix " <FixBodies:FixBodies>                                                    
+  completion template Term : "cofix CofixBodies" =
+    "cofix " <CofixBodies:CofixBodies>                                          
+  completion template Term : "let Ident OptType := Term in Term" =
+    "let " <Ident:Ident> " " <:Binder> " " <OptType:OptType> " := " <Term:Term> " in " <Term:Term>  
+  completion template Term : "let fix FixBody in Term" =
+    "let fix " <FixBody:FixBody> " in " <Term:Term>                       
+  completion template Term : "let fix CofixBody in Term" =
+    "let fix " <CofixBody:CofixBody> " in " <Term:Term>                 
+  completion template Term : "let ( ) OptDepRetType := Term in Term" =
+    "let ( " <:Name> ") " <OptDepRetType:OptDepRetType> " := " <Term:Term> " in " <Term:Term>  
+  completion template Term : "let \' Pattern OptInTerm := Term OptReturnType in Term" =
+    "let \' " <Pattern:Pattern> " " <OptInTerm:OptInTerm> " := " <Term:Term> " " <OptReturnType:OptReturnType> " in " <Term:Term>  
+  completion template Term : "if Term OptDepRetType then Term else Term" =
+    "if " <Term:Term> " " <OptDepRetType:OptDepRetType> " then " <Term:Term> " else " <Term:Term>  
+  completion template Term : "@QualId " =
+    "@" <QualId:QualId> " " <:Term>                                                      
+  completion template Term : "Term % Ident" =
+    <Term:Term> " % " <Ident:Ident>                                                  
+  completion template Term : "match MatchItem OptReturnType with Equations end" =
+    "match " <MatchItem:MatchItem> " " <OptReturnType:OptReturnType> " with " <Equations:Equations> " end"  
+  completion template Term : "Term : Term" =
+    <Term:Term> " : " <Term:Term>                                                     
+  completion template Term : "Term <: Term" =
+    <Term:Term> " <: " <Term:Term>                                                   
+  completion template Term : "Term :>" =
+    <Term:Term> " :>"                                                                     
+  completion template Term : "Term -> Term" =
+    <Term:Term> " -> " <Term:Term>                                                   
+  completion template Term : "Term Arg" =
+    <Term:Term> " " <Arg:Arg>                                                            
+  completion template Equations : "| Equation" =
+    "| " <Equation:Equation>                                                      
+  completion template OptType : ": Term" =
+    ": " <Term:Term>                                                                    
+  completion template Arg : "(Ident := Term)" =
+    "(" <Ident:Ident> " := " <Term:Term> ")"                                       
+  completion template Binder : "(Name: Term)" =
+    "(" <Name:Name> ": " <Term:Term> ")"                                           
+  completion template Binder : "(NameOptType := Term)" =
+    "(" <Name:Name> <OptType:OptType> " := " <Term:Term> ")"              
+  completion template Name : "_" =
+    "_"                                                                                         
+  completion template Term : "(Term)" =
+    "(" <Term:Term> ")"                                                                    
+  completion template Sort : "Prop" =
+    "Prop"                                                                                   
+  completion template Sort : "Set" =
+    "Set"                                                                                     
+  completion template Sort : "Tyoe" =
+    "Tyoe"                                                                                   

@@ -1,0 +1,41 @@
+module Lexical
+
+lexical syntax
+
+	// Space, newline and horizontal tabulation are considered as blanks. Blanks are ignored but they separate tokens.
+
+	LAYOUT = [\ \n\t\r]
+
+	// Comments in Coq are enclosed between (* and *), and can be nested. 
+	// They can contain any character. However, string literals must be correctly closed. 
+	// Comments are treated as blanks.
+ 
+ 	LAYOUT      = "(*" CommentChar "*)"
+ 	CommentChar = ~[\"] | String
+ 	
+ 	FirstLetter      = [a-zA-Z\_]
+ 	SubsequentLetter = [a-zA-Z0-9\_\']
+ 	Ident            = FirstLetter SubsequentLetter*
+ 	Ident            = Reserved {reject}
+	
+ 	Digit	  = [0-9]
+	Num     = Digit+
+	Integer	= "-"? Num
+
+	// Strings are delimited by " (double quote), and enclose a sequence of any characters different from " or the sequence "" to denote the double quote character.
+	
+	String     = "\"" StringChar* "\""
+	StringChar = ~[\"] | "\"\""
+	
+	
+ 	Reserved = "_" |	"as" | "at" | "cofix" | "else" | "end" | 
+ 	           "exists" | "exists2" | "fix" | "for" | "forall" | "fun" | 
+ 	           "if" | "IF" | "in" | "let" | "match" | "mod" |
+ 	           "Prop" | "return" | "Set" | "then" | "Type" | "using" | 
+					 	"where" | "with"
+						
+lexical restrictions
+
+	Ident  -/- [a-zA-A0-9\_\']
+	Num    -/- [0-9]
+	String -/- [\"]

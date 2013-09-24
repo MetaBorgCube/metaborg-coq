@@ -1,0 +1,101 @@
+module Gallina
+imports Lexical
+
+exports
+  context-free syntax
+    "forall" Binder+ "," Term                                      -> Term      {cons("ForAll")}
+    "fun" Binder+ "=>" Term                                        -> Term      {cons("Fun")}
+    "fix" FixBodies                                                -> Term      {cons("Fix")}
+    "cofix" CoFixBodies                                            -> Term      {cons("CoFix")}
+    "let" Ident Binder* OptType ":=" Term "in" Term                -> Term      {cons("Let")}
+    "let" "fix" FixBody "in" Term                                  -> Term      {cons("LetFix")}
+    "let" "fix" CoFixBody "in" Term                                -> Term      {cons("LetCoFix")}
+    "let" "(" {Name ","}* ")" OptDepRetType ":=" Term "in" Term    -> Term      {cons("X")}
+    "let" "\'" Pattern OptInTerm ":=" Term OptReturnType "in" Term -> Term      {cons("Y")}
+    "if" Term OptDepRetType "then" Term "else" Term                -> Term      {cons("If")}
+    "@" QualId Term*                                               -> Term      {cons("Z")}
+    Term "%" Ident                                                 -> Term      {cons("A")}
+    "match" {MatchItem ","}+ OptReturnType "with" Equations "end"  -> Term      {cons("Match")}
+    Term ":" Term                                                  -> Term      {cons("Cast"), non-assoc}
+    Term "<:" Term                                                 -> Term      {cons("Check"), non-assoc}
+    Term ":>"                                                      -> Term      {cons("Coerce"), non-assoc}
+    Term "->" Term                                                 -> Term      {cons("Product"), right}
+    Term Arg+                                                      -> Term      {cons("Apply")}
+    {Equation "|"}+                                                -> Equations 
+    "|" {Equation "|"}+                                            -> Equations {bracket}
+                                                                   -> OptType   {cons("None")}
+    ":" Term                                                       -> OptType   {cons("Type")}
+    Term                                                           -> Arg       
+    "(" Ident ":=" Term ")"                                        -> Arg       {cons("Assign")}
+    Name                                                           -> Binder    {cons("Bind")}
+    "(" Name+ ":" Term ")"                                         -> Binder    {cons("Binds")}
+    "(" Name OptType ":=" Term ")"                                 -> Binder    {cons("Assign")}
+    Ident                                                          -> Name      
+    "_"                                                            -> Name      {cons("Wld")}
+    QualId                                                         -> Term      {cons("Ref")}
+    Sort                                                           -> Term      {cons("Sort")}
+    Num                                                            -> Term      {cons("Num")}
+    "(" Term ")"                                                   -> Term      {bracket}
+    "Prop"                                                         -> Sort      {cons("Prop")}
+    "Set"                                                          -> Sort      {cons("Set")}
+    "Tyoe"                                                         -> Sort      {cons("Type")}
+
+  context-free syntax
+    CONTENTCOMPLETE -> Equations {cons("COMPLETION-Equations")}
+    CONTENTCOMPLETE -> OptType   {cons("COMPLETION-OptType")}
+    CONTENTCOMPLETE -> Arg       {cons("COMPLETION-Arg")}
+    CONTENTCOMPLETE -> Binder    {cons("COMPLETION-Binder")}
+    CONTENTCOMPLETE -> Name      {cons("COMPLETION-Name")}
+    CONTENTCOMPLETE -> Term      {cons("COMPLETION-Term")}
+    CONTENTCOMPLETE -> Sort      {cons("COMPLETION-Sort")}
+
+  syntax
+    <Ident-LEX>                 -> <QualId-CF> 
+    <QualId-CF> "." <Ident-LEX> -> <QualId-CF> {cons("QId")}
+
+  context-free syntax
+    FixBody                                          -> FixBodies     
+    FixBody "with" {FixBody "with"}+ "for" Ident     -> FixBodies     {cons("With")}
+    Ident Binder+ OptAnnotation OptType ":=" Term    -> FixBody       {cons("FixBody")}
+    CoFixBody                                        -> CoFixBodies   
+    CoFixBody "with" {CoFixBody "with"}+ "for" Ident -> CoFixBodies   {cons("With")}
+    Ident Binder* OptType ":=" Term                  -> CoFixBody     {cons("CoFixBody")}
+                                                     -> OptAnnotation {cons("None")}
+    "{" "struct" Ident "}"                           -> OptAnnotation {cons("Anno")}
+    Term OptAlias OptInTerm                          -> MatchItem     
+                                                     -> OptAlias      {cons("None")}
+    "as" Name                                        -> OptAlias      {cons("As")}
+                                                     -> OptInTerm     {cons("None")}
+    "in" Term                                        -> OptInTerm     {cons("In")}
+                                                     -> OptDepRetType {cons("None")}
+    OptAlias ReturnType                              -> OptDepRetType {cons("DepRet")}
+                                                     -> OptReturnType {cons("None")}
+    ReturnType                                       -> OptReturnType 
+    "return" Term                                    -> ReturnType    {cons("Return")}
+    {MultPattern "|"}+ "=>" Term                     -> Equation      {cons("Eq")}
+    {Pattern ","}+                                   -> MultPattern   
+    QualId Pattern+                                  -> Pattern       {cons("QidPattern")}
+    Pattern "as" Ident                               -> Pattern       {cons("AsPattern")}
+    Pattern "%" Ident                                -> Pattern       {cons("XPattern")}
+    QualId                                           -> Pattern       
+    "_"                                              -> Pattern       {cons("Wld")}
+    Num                                              -> Pattern       
+    "(" {OrPattern ","}+ ")"                         -> Pattern       {cons("OrPattern")}
+    {Pattern "|"}+                                   -> OrPattern     
+
+  context-free syntax
+    CONTENTCOMPLETE -> FixBodies     {cons("COMPLETION-FixBodies")}
+    CONTENTCOMPLETE -> FixBody       {cons("COMPLETION-FixBody")}
+    CONTENTCOMPLETE -> CoFixBodies   {cons("COMPLETION-CoFixBodies")}
+    CONTENTCOMPLETE -> CoFixBody     {cons("COMPLETION-CoFixBody")}
+    CONTENTCOMPLETE -> OptAnnotation {cons("COMPLETION-OptAnnotation")}
+    CONTENTCOMPLETE -> MatchItem     {cons("COMPLETION-MatchItem")}
+    CONTENTCOMPLETE -> OptAlias      {cons("COMPLETION-OptAlias")}
+    CONTENTCOMPLETE -> OptInTerm     {cons("COMPLETION-OptInTerm")}
+    CONTENTCOMPLETE -> OptDepRetType {cons("COMPLETION-OptDepRetType")}
+    CONTENTCOMPLETE -> OptReturnType {cons("COMPLETION-OptReturnType")}
+    CONTENTCOMPLETE -> ReturnType    {cons("COMPLETION-ReturnType")}
+    CONTENTCOMPLETE -> Equation      {cons("COMPLETION-Equation")}
+    CONTENTCOMPLETE -> MultPattern   {cons("COMPLETION-MultPattern")}
+    CONTENTCOMPLETE -> Pattern       {cons("COMPLETION-Pattern")}
+    CONTENTCOMPLETE -> OrPattern     {cons("COMPLETION-OrPattern")}

@@ -1,0 +1,10 @@
+module names
+
+imports
+	
+	include/Coq
+	
+namespaces
+	
+binding rules
+

@@ -1,0 +1,16 @@
+module Coq.main
+
+imports Coq-Builders Coq-Refactorings Coq-Colorer Coq-Completions Coq-Folding Coq-References Coq-Syntax
+
+language General properties
+                  
+  name          : Coq
+  id            : org.metaborg.lang.coq
+  extends       : Root
+                  
+  description   : "Spoofax/IMP-generated editor for the Coq language"
+  url           : http://strategoxt.org
+                  
+  extensions    : v
+  table         : include/Coq.tbl
+  start symbols : Start

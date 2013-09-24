@@ -1,0 +1,21 @@
+module Lexical
+exports
+  lexical syntax
+    [\ \n\t\r]                                                                                                                                                                                                                       -> LAYOUT           
+    "(*" CommentChar "*)"                                                                                                                                                                                                            -> LAYOUT           
+    ~[\"] | String                                                                                                                                                                                                                   -> CommentChar      
+    [a-zA-Z\_]                                                                                                                                                                                                                       -> FirstLetter      
+    [a-zA-Z0-9\_\']                                                                                                                                                                                                                  -> SubsequentLetter 
+    FirstLetter SubsequentLetter*                                                                                                                                                                                                    -> Ident            
+    Reserved                                                                                                                                                                                                                         -> Ident            {reject}
+    [0-9]                                                                                                                                                                                                                            -> Digit            
+    Digit+                                                                                                                                                                                                                           -> Num              
+    "-"? Num                                                                                                                                                                                                                         -> Integer          
+    "\"" StringChar* "\""                                                                                                                                                                                                            -> String           
+    ~[\"] | "\"\""                                                                                                                                                                                                                   -> StringChar       
+    "_" | "as" | "at" | "cofix" | "else" | "end" | "exists" | "exists2" | "fix" | "for" | "forall" | "fun" | "if" | "IF" | "in" | "let" | "match" | "mod" | "Prop" | "return" | "Set" | "then" | "Type" | "using" | "where" | "with" -> Reserved         
+
+  lexical restrictions
+    Ident -/- [a-zA-A0-9\_\']
+    Num -/- [0-9]
+    String -/- [\"]

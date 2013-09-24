@@ -1,0 +1,100 @@
+module Gallina
+
+imports Lexical
+
+templates
+
+	Term.ForAll   = <forall <Binder+> , <Term>>
+	Term.Fun      = [fun [Binder+] => [Term]]
+	Term.Fix      = <fix <FixBodies>>
+	Term.CoFix    = <cofix <CoFixBodies>>
+	Term.Let      = <let <Ident> <Binder*> <OptType> := <Term> in <Term>>
+	Term.LetFix   = <let fix <FixBody> in <Term>>
+	Term.LetCoFix = <let fix <CoFixBody> in <Term>>
+	Term.X        = <let ( <Name*; separator=", ">) <OptDepRetType> := <Term> in <Term>>
+	Term.Y        = <let ' <Pattern> <OptInTerm> := <Term> <OptReturnType> in <Term>>
+	Term.If       = <if <Term> <OptDepRetType> then <Term> else <Term>>
+	Term.Z        = <@<QualId> <Term*>>
+	Term.A        = <<Term> % <Ident>>
+	Term.Match    = <match <MatchItem+; separator=", "> <OptReturnType> with <Equations> end>	
+	Term.Cast     = <<Term> : <Term>>  {non-assoc}
+	Term.Check    = [[Term] <: [Term]] {non-assoc}
+	Term.Coerce   = [[Term] :>]        {non-assoc}
+	Term.Product  = [[Term] -> [Term]] {right}
+	Term.Apply    = <<Term> <Arg+>>
+	
+	Equations     = <<Equation+; separator = "| ">>
+	Equations     = <| <Equation+; separator = "| ">> {bracket}
+	
+	OptType.None  = <>
+	OptType.Type  = <: <Term>>
+	
+	Arg        = <<Term>>
+	Arg.Assign = <(<Ident> := <Term>)>
+	
+	Binder.Bind   = <<Name>>
+	Binder.Binds  = <(<Name+>: <Term>)>
+	Binder.Assign = <(<Name><OptType> := <Term>)>
+	
+	Name 			    = <<Ident>>
+	Name.Wld	    = <_>
+
+	Term.Ref      = <<QualId>>
+	Term.Sort     = <<Sort>>
+	Term.Num      = <<Num>>
+
+	Term          = <(<Term>)> {bracket}
+		
+	Sort.Prop     = <Prop>
+	Sort.Set      = <Set>
+	Sort.Type     = <Tyoe>
+	
+syntax
+
+                  <Ident-LEX> -> <QualId-CF> 
+  <QualId-CF> "." <Ident-LEX> -> <QualId-CF> {cons("QId")}
+
+templates
+
+	FixBodies           = <<FixBody>>
+ 	FixBodies.With      = <<FixBody> with <FixBody+; separator="with "> for <Ident>>
+
+	FixBody.FixBody     = <<Ident> <Binder+> <OptAnnotation> <OptType> := <Term>>
+
+	CoFixBodies         = <<CoFixBody>>
+ 	CoFixBodies.With    = <<CoFixBody> with <CoFixBody+; separator="with "> for <Ident>>
+
+	CoFixBody.CoFixBody =	<<Ident> <Binder*> <OptType> := <Term>>
+
+	OptAnnotation.None  = <>
+	OptAnnotation.Anno  = <{ struct <Ident>}>
+	
+	MatchItem            = <<Term> <OptAlias> <OptInTerm>>
+	
+	OptAlias.None        = <>
+	OptAlias.As          = <as <Name>>
+	
+	OptInTerm.None       = <>
+	OptInTerm.In         = <in <Term>>
+	
+	OptDepRetType.None   = <>
+	OptDepRetType.DepRet = <<OptAlias> <ReturnType>>
+	
+	OptReturnType.None   = <>
+	OptReturnType        = <<ReturnType>>
+	ReturnType.Return    = <return <Term>>
+
+	Equation.Eq        = [[MultPattern+; separator=" | "] => [Term]]
+	
+	MultPattern        = <<Pattern+; separator=", ">>
+	
+	Pattern.QidPattern = <<QualId> <Pattern+>>
+	Pattern.AsPattern  = <<Pattern> as <Ident>>
+	Pattern.XPattern   = <<Pattern> % <Ident>>
+	Pattern            = <<QualId>>
+	Pattern.Wld        = <_>
+	Pattern            = <<Num>>
+	Pattern.OrPattern  = <(<OrPattern+; separator=", ">)>
+	
+	OrPattern          = <<Pattern+; separator=" | ">>
+	

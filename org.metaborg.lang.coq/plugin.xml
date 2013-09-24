@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+   <extension
+         point="org.eclipse.imp.runtime.languageDescription">
+      <language
+            extensions="v"
+            description="Coq"
+            language="Coq"
+            derivedFrom="DynamicRoot"
+            validator="org.metaborg.lang.coq.CoqValidator"
+            validatorClass="org.metaborg.lang.coq.CoqValidator"
+      ></language>
+   </extension>
+   <extension
+         id="org.metaborg.lang.coq.parser"
+         name="Coq Parser"
+         point="org.eclipse.imp.runtime.parser">
+      <parser
+            class="org.metaborg.lang.coq.CoqParseController"
+            language="Coq">
+      </parser>
+   </extension>    
+</plugin>
