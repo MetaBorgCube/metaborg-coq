@@ -10,8 +10,8 @@ lexical syntax
 	// They can contain any character. However, string literals must be correctly closed. 
 	// Comments are treated as blanks.
  
- 	LAYOUT      = "(*" CommentChar "*)"
- 	CommentChar = ~[\"] | String
+	LAYOUT      = "(*" CommentChar* "*)"
+	CommentChar = ~[\"] | String
  	
  	FirstLetter      = [a-zA-Z\_]
  	SubsequentLetter = [a-zA-Z0-9\_\']
@@ -28,14 +28,41 @@ lexical syntax
 	StringChar = ~[\"] | "\"\""
 	
 	
- 	Reserved = "_" |	"as" | "at" | "cofix" | "else" | "end" | 
- 	           "exists" | "exists2" | "fix" | "for" | "forall" | "fun" | 
- 	           "if" | "IF" | "in" | "let" | "match" | "mod" |
- 	           "Prop" | "return" | "Set" | "then" | "Type" | "using" | 
-					 	"where" | "with"
+ 	Reserved = "_"
+ 	Reserved = "as"
+ 	Reserved = "at"
+ 	Reserved = "cofix"
+ 	Reserved = "else"
+ 	Reserved = "end"
+ 	Reserved = "exists"
+ 	Reserved = "exists2"
+ 	Reserved = "fix"
+ 	Reserved = "for"
+ 	Reserved = "forall"
+ 	Reserved = "fun"
+ 	Reserved = "if"
+ 	Reserved = "IF"
+ 	Reserved = "in"
+ 	Reserved = "let"
+ 	Reserved = "match"
+ 	Reserved = "mod"
+ 	Reserved = "Prop"
+ 	Reserved = "return"
+ 	Reserved = "Set"
+ 	Reserved = "then"
+ 	Reserved = "Type"
+ 	Reserved = "using"
+ 	Reserved = "where"
+ 	Reserved = "with"
 						
 lexical restrictions
 
 	Ident  -/- [a-zA-A0-9\_\']
 	Num    -/- [0-9]
 	String -/- [\"]
+	
+context-free restrictions
+
+	LAYOUT? -/- [\ \n\r\t]
+	LAYOUT? -/- [\(].[\*]
+	

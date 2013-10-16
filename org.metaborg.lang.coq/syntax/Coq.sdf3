@@ -1,0 +1,15 @@
+module Coq
+
+imports
+
+  Vernacular
+  Gallina
+  
+context-free start-symbols
+
+	Start
+	
+context-free syntax
+
+	Start = Term
+	

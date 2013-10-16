@@ -17,7 +17,7 @@ templates
 	Term.LetFix   = <let fix <FixBody> in <Term>>
 	Term.LetCoFix = <let fix <CoFixBody> in <Term>>
 	Term.X        = <let ( <Name*; separator=", ">) <OptDepRetType> := <Term> in <Term>>
-	Term.Y        = <let ' <Pattern> <OptInTerm> := <Term> <OptReturnType> in <Term>>
+	// Term.Y        = <let ' <Pattern> <OptInTerm> := <Term> <OptReturnType> in <Term>>
 	Term.If       = <if <Term> <OptDepRetType> then <Term> else <Term>>
 	Term.Z        = <@<QualId> <Term*>>
 	
@@ -78,7 +78,7 @@ templates
 	OptAnnotation.None  = <>
 	OptAnnotation.Anno  = <{ struct <Ident>}>
 	
-	MatchItem            = <<Term> <OptAlias> <OptInTerm>>
+	MatchItem.MatchItem = <<Term> <OptAlias> <OptInTerm>>
 	
 	OptAlias.None        = <>
 	OptAlias.As          = <as <Name>>
