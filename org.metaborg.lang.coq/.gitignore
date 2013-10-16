@@ -15,9 +15,9 @@ include/coq.ctree.dep
 include/coq.jar
 include/coq-java.jar
 editor/java/trans
-editor/Coq-*.generated.*
-syntax/Coq*.generated.esv
-syntax/Coq.generated.pp
+editor/*.generated.*
+syntax/*.sdf
+trans/*.generated.*
 .settings/org.eclipse.jdt.core.prefs
 utils
 lib/runtime
