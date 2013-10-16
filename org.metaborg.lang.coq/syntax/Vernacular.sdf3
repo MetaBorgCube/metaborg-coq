@@ -1,5 +1,10 @@
 module Vernacular
 
+imports 
+
+  Lexical
+  Gallina
+  
 templates
 
 // sentence  ::= assumption
