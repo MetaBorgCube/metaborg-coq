@@ -8,14 +8,23 @@ templates
 	Term.Fun      = [fun [Binder+] => [Term]]
 	Term.Fix      = <fix <FixBodies>>
 	Term.CoFix    = <cofix <CoFixBodies>>
-	Term.Let      = <let <Ident> <Binder*> <OptType> := <Term> in <Term>>
+	Term.Let      = 
+	  <let <Ident> <Binder*> <OptType> := 
+	     <Term> 
+	   in 
+	   <Term>
+	  >
 	Term.LetFix   = <let fix <FixBody> in <Term>>
 	Term.LetCoFix = <let fix <CoFixBody> in <Term>>
 	Term.X        = <let ( <Name*; separator=", ">) <OptDepRetType> := <Term> in <Term>>
 	Term.Y        = <let ' <Pattern> <OptInTerm> := <Term> <OptReturnType> in <Term>>
 	Term.If       = <if <Term> <OptDepRetType> then <Term> else <Term>>
 	Term.Z        = <@<QualId> <Term*>>
+	
+	
 	Term.A        = <<Term> % <Ident>>
+	
+	
 	Term.Match    = <match <MatchItem+; separator=", "> <OptReturnType> with <Equations> end>	
 	Term.Cast     = <<Term> : <Term>>  {non-assoc}
 	Term.Check    = [[Term] <: [Term]] {non-assoc}
@@ -47,7 +56,7 @@ templates
 		
 	Sort.Prop     = <Prop>
 	Sort.Set      = <Set>
-	Sort.Type     = <Tyoe>
+	Sort.Type     = <Type>
 	
 syntax
 
