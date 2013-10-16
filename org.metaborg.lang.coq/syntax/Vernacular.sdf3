@@ -1,0 +1,43 @@
+module Vernacular
+
+templates
+
+// sentence  ::= assumption
+//   | definition
+//   | inductive
+//   | fixpoint
+//   | assertion proof
+//      
+// assumption  ::= assumption_keyword assums .
+//      
+// assumption_keyword   ::=  Axiom | Conjecture
+//   | Parameter | Parameters
+//   | Variable | Variables
+//   | Hypothesis | Hypotheses
+//      
+// assums  ::= ident  ...  ident : term
+//   | ( ident  ...  ident : term )  ...  ( ident  ...  ident : term )
+//      
+// definition  ::= Definition ident [binders] [: term] := term .
+//   | Let ident [binders] [: term] := term .
+//      
+// inductive ::= Inductive ind_body with ... with ind_body .
+//   | CoInductive ind_body with ... with ind_body .
+//      
+// ind_body  ::= ident [binders] : term :=
+//       [[|] ident [binders] [:term] | ... | ident [binders] [:term]]
+//      
+// fixpoint  ::= Fixpoint fix_body with ... with fix_body .
+//   | CoFixpoint cofix_body with ... with cofix_body .
+//      
+// assertion ::= assertion_keyword ident [binders] : term .
+//      
+// assertion_keyword ::= Theorem | Lemma
+//   | Remark | Fact
+//   | Corollary | Proposition
+//   | Definition | Example
+//  
+//      
+// proof ::= Proof . ... Qed .
+//   | Proof . ... Defined .
+//   | Proof . ... Admitted .
