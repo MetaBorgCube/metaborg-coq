@@ -3,7 +3,7 @@ module Gallina
 imports Lexical
 
 templates
-
+ 
 	Term.ForAll   = <forall <Binder+> , <Term>>
 	Term.Fun      = [fun [Binder+] => [Term]]
 	Term.Fix      = <fix <FixBodies>>
@@ -30,7 +30,13 @@ templates
 	Term.Check    = [[Term] <: [Term]] {non-assoc}
 	Term.Coerce   = [[Term] :>]        {non-assoc}
 	Term.Product  = [[Term] -> [Term]] {right}
-	Term.Apply    = <<Term> <Arg+>>
+	
+	Term.Apply    = <<Term> <Term>> {left}
+	//Term.Apply    = <<Term> <Arg+>> {left}
+	
+	// Next one is a try for notations
+	Term.Eq       = <<Term> = <Term>>
+	
 	
 	Equations     = <<Equation+; separator = "| ">>
 	Equations     = <| <Equation+; separator = "| ">> {bracket}
@@ -57,6 +63,10 @@ templates
 	Sort.Prop     = <Prop>
 	Sort.Set      = <Set>
 	Sort.Type     = <Type>
+
+context-free priorities
+
+  Term.Apply > Term.Product > {non-assoc: Term.Check Term.Cast Term.Coerce}
 	
 syntax
 

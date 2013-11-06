@@ -13,7 +13,7 @@ lexical syntax
 	LAYOUT      = "(*" CommentChar* "*)"
 	CommentChar = ~[\"] | String
  	
- 	FirstLetter      = [a-zA-Z\_]
+ 	FirstLetter      = [a-zA-Z\_] 
  	SubsequentLetter = [a-zA-Z0-9\_\']
  	Ident            = FirstLetter SubsequentLetter*
  	Ident            = Reserved {reject}
@@ -57,9 +57,11 @@ lexical syntax
 						
 lexical restrictions
 
-	Ident  -/- [a-zA-A0-9\_\']
+	Ident  -/- [a-zA-Z0-9\_\']
 	Num    -/- [0-9]
 	String -/- [\"]
+	
+	"Type" "Prop" -/- [a-zA-Z0-9\_\']
 	
 context-free restrictions
 

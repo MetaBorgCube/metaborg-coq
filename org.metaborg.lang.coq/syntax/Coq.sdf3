@@ -11,5 +11,5 @@ context-free start-symbols
 	
 context-free syntax
 
-	Start = Term
-	
+	Start = CoqFile
+	 

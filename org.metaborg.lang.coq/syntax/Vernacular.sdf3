@@ -4,45 +4,92 @@ imports
 
   Lexical
   Gallina
+ 
+lexical syntax
+ 
+  AssumptionKeyword = "Axiom" 
+  AssumptionKeyword = "Conjecture"
+  AssumptionKeyword = "Parameter"
+  AssumptionKeyword = "Parameters"
+  AssumptionKeyword = "Variable"
+  AssumptionKeyword = "Variables"
+  AssumptionKeyword = "Hypothesis"
+  AssumptionKeyword = "Hypotheses"
   
+  AssertionKeyword = "Theorem"
+  AssertionKeyword = "Lemma"
+  AssertionKeyword = "Remark"
+  AssertionKeyword = "Fact"
+  AssertionKeyword = "Corollary"
+  AssertionKeyword = "Proposition"
+  AssertionKeyword = "Definition"
+  AssertionKeyword = "Example"
+
 templates
 
-// sentence  ::= assumption
-//   | definition
-//   | inductive
-//   | fixpoint
-//   | assertion proof
-//      
-// assumption  ::= assumption_keyword assums .
-//      
-// assumption_keyword   ::=  Axiom | Conjecture
-//   | Parameter | Parameters
-//   | Variable | Variables
-//   | Hypothesis | Hypotheses
-//      
-// assums  ::= ident  ...  ident : term
-//   | ( ident  ...  ident : term )  ...  ( ident  ...  ident : term )
-//      
-// definition  ::= Definition ident [binders] [: term] := term .
-//   | Let ident [binders] [: term] := term .
-//      
-// inductive ::= Inductive ind_body with ... with ind_body .
-//   | CoInductive ind_body with ... with ind_body .
-//      
-// ind_body  ::= ident [binders] : term :=
-//       [[|] ident [binders] [:term] | ... | ident [binders] [:term]]
-//      
-// fixpoint  ::= Fixpoint fix_body with ... with fix_body .
-//   | CoFixpoint cofix_body with ... with cofix_body .
-//      
-// assertion ::= assertion_keyword ident [binders] : term .
-//      
-// assertion_keyword ::= Theorem | Lemma
-//   | Remark | Fact
-//   | Corollary | Proposition
-//   | Definition | Example
-//  
-//      
-// proof ::= Proof . ... Qed .
-//   | Proof . ... Defined .
-//   | Proof . ... Admitted .
+  CoqFile.Sent = <<Sentence*>> 
+
+  Sentence.Assumption = <<Assumption>>
+  Sentence.Definition = <<Definition>>
+  Sentence.Inductive = <<Inductive>>
+  Sentence.Fixpoint = <<Fixpoint>>
+  Sentence.AssertionProof = <<Assertion> <Proof>>
+      
+  Assumption.Assuption  = <<AssumptionKeyword> <Assums> .> 
+         
+  Assums.Term  = <<Ident+> : <Term>>
+  Assums.Terms = <<AssumsPar+>>
+
+  AssumsPar.Pars = <(<Ident+> : <Term>)> 
+      
+  Definition.Def = <
+  
+  Definition <Ident> <Binder*> <OptType> := 
+  <Term> .
+  >
+  
+  Definition.Let = <
+  
+  Let <Ident> <Binder*> <OptType> := 
+  <Term> .
+  >
+      
+  Inductive.Ind    = <
+  
+  Inductive <IndBody+; separator = "with ">.
+  
+>
+  
+  Inductive.CoInd  = <
+  
+  CoInductive <IndBody+; separator = "with "> .
+  >
+      
+  ConsDecl.ConsDecl =  <<Ident> <Binder*> <OptType>
+
+>
+     
+  ConsDecls.ListDeclBar =  <| <ConsDecl+; separator = "| ">>   
+  ConsDecls.ListDecl =  <<ConsDecl+; separator = "| ">>   
+      
+  IndBody.Induc = <
+  <Ident> <Binder*> : <Term> :=
+  <ConsDecls>>
+            
+  Fixpoint.Fixpoint   = <
+  
+  Fixpoint <FixBody+; separator = "\n with"> .
+  >
+  
+  Fixpoint.CoFixpoint = <
+  
+  CoFixpoint <CoFixBody+; separator = "\n with"> .
+  >
+      
+  Assertion.Assertion = <<AssertionKeyword> <Ident> <Binder*> : <Term> .>
+      
+ 
+      
+ // Proof.Qed     = <Proof. ... Qed .>
+ // Proof.Defined = <Proof . ... Defined .>
+  Proof.Admitted = <Proof . Admitted .>

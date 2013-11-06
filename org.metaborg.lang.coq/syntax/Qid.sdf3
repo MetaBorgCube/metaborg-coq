@@ -1,0 +1,11 @@
+module Qid
+
+imports
+
+	Lexical
+
+templates
+
+	QualId         = <<Ident>>
+	QualId.QId     = <<QualId>.<Ident>>
+	
