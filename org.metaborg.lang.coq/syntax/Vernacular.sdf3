@@ -27,7 +27,7 @@ lexical syntax
 
 templates
 
-  CoqFile.Sent = <<Sentence*>> 
+  CoqFile.Sent = <<Sentence*; separator="\n\n">> 
 
   Sentence.Assumption = <<Assumption>>
   Sentence.Definition = <<Definition>>
@@ -35,61 +35,60 @@ templates
   Sentence.Fixpoint = <<Fixpoint>>
   Sentence.AssertionProof = <<Assertion> <Proof>>
       
-  Assumption.Assuption  = <<AssumptionKeyword> <Assums> .> 
+  Assumption.Assuption  = <<AssumptionKeyword> <Assums>.> 
          
   Assums.Term  = <<Ident+> : <Term>>
   Assums.Terms = <<AssumsPar+>>
-
-  AssumsPar.Pars = <(<Ident+> : <Term>)> 
-      
-  Definition.Def = <
   
+  AssumsPar.Pars = <(<Ident+> : <Term>)> 
+  
+  Definition.Def = <
   Definition <Ident> <Binder*> <OptType> := 
-  <Term> .
+  <Term>
+  .
   >
   
   Definition.Let = <
-  
   Let <Ident> <Binder*> <OptType> := 
-  <Term> .
+  <Term>.
   >
-      
+  
   Inductive.Ind    = <
-  
   Inductive <IndBody+; separator = "with ">.
-  
->
+  >
   
   Inductive.CoInd  = <
-  
-  CoInductive <IndBody+; separator = "with "> .
+  CoInductive <IndBody+; separator = "with ">.
   >
-      
-  ConsDecl.ConsDecl =  <<Ident> <Binder*> <OptType>
 
->
-     
+  ConsDecl.ConsDecl =  <
+  <Ident> <Binder*> <OptType>
+  
+  >
+  
   ConsDecls.ListDeclBar =  <| <ConsDecl+; separator = "| ">>   
   ConsDecls.ListDecl =  <<ConsDecl+; separator = "| ">>   
-      
+  
   IndBody.Induc = <
   <Ident> <Binder*> : <Term> :=
-  <ConsDecls>>
-            
-  Fixpoint.Fixpoint   = <
+  <ConsDecls>
+  >
   
-  Fixpoint <FixBody+; separator = "\n with"> .
+  Fixpoint.Fixpoint   = <
+  Fixpoint <FixBody+; separator = "\n with">.
   >
   
   Fixpoint.CoFixpoint = <
-  
-  CoFixpoint <CoFixBody+; separator = "\n with"> .
+  CoFixpoint <CoFixBody+; separator = "\n with">.
   >
-      
-  Assertion.Assertion = <<AssertionKeyword> <Ident> <Binder*> : <Term> .>
-      
- 
-      
+  
+  Assertion.Assertion = <<AssertionKeyword> <Ident> <Binder*> : <Term>.>
+  
  // Proof.Qed     = <Proof. ... Qed .>
  // Proof.Defined = <Proof . ... Defined .>
-  Proof.Admitted = <Proof . Admitted .>
+  Proof.Admitted = <Proof. Admitted.>
+
+template options
+
+  tokenize: "."
+

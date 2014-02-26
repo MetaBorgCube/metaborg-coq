@@ -4,19 +4,19 @@ imports Lexical
 
 templates
  
-	Term.ForAll   = <forall <Binder+> , <Term>>
+	Term.ForAll   = <forall <Binder+>, <Term>>
 	Term.Fun      = [fun [Binder+] => [Term]]
 	Term.Fix      = <fix <FixBodies>>
 	Term.CoFix    = <cofix <CoFixBodies>>
 	Term.Let      = 
-	  <let <Ident> <Binder*> <OptType> := 
+	  <let <Ident> <Binder*><OptType> := 
 	     <Term> 
 	   in 
-	   <Term>
+	     <Term>
 	  >
 	Term.LetFix   = <let fix <FixBody> in <Term>>
 	Term.LetCoFix = <let fix <CoFixBody> in <Term>>
-	Term.X        = <let ( <Name*; separator=", ">) <OptDepRetType> := <Term> in <Term>>
+	Term.X        = <let (<Name*; separator=", ">) <OptDepRetType> := <Term> in <Term>>
 	// Term.Y        = <let ' <Pattern> <OptInTerm> := <Term> <OptReturnType> in <Term>>
 	Term.If       = <if <Term> <OptDepRetType> then <Term> else <Term>>
 	Term.Z        = <@<QualId> <Term*>>
@@ -37,15 +37,14 @@ templates
 	// Next one is a try for notations
 	Term.Eq       = <<Term> = <Term>>
 	
-	
 	Equations     = <<Equation+; separator = "| ">>
-	Equations     = <| <Equation+; separator = "| ">> {bracket}
+  Equations     = <| <Equation+; separator = "| ">> {bracket}
 	
 	OptType.None  = <>
 	OptType.Type  = <: <Term>>
 	
-	Arg        = <<Term>>
-	Arg.Assign = <(<Ident> := <Term>)>
+	// Arg        = <<Term>>
+	// Arg.Assign = <(<Ident> := <Term>)>
 	
 	Binder.Bind   = <<Name>>
 	Binder.Binds  = <(<Name+>: <Term>)>
@@ -86,7 +85,7 @@ templates
 	CoFixBody.CoFixBody =	<<Ident> <Binder*> <OptType> := <Term>>
 
 	OptAnnotation.None  = <>
-	OptAnnotation.Anno  = <{ struct <Ident>}>
+	OptAnnotation.Anno  = <{ struct <Ident> }>
 	
 	MatchItem.MatchItem = <<Term> <OptAlias> <OptInTerm>>
 	
