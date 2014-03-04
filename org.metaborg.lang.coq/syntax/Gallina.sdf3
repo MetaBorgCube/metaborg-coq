@@ -25,7 +25,11 @@ templates
 	Term.A        = <<Term> % <Ident>>
 	
 	
-	Term.Match    = <match <MatchItem+; separator=", "> <OptReturnType> with <Equations> end>	
+	Term.Match    = <
+	match <MatchItem+; separator=", "> <OptReturnType> with
+	  <Equations>	end
+	>
+		
 	Term.Cast     = <<Term> : <Term>>  {non-assoc}
 	Term.Check    = [[Term] <: [Term]] {non-assoc}
 	Term.Coerce   = [[Term] :>]        {non-assoc}
@@ -37,8 +41,12 @@ templates
 	// Next one is a try for notations
 	Term.Eq       = <<Term> = <Term>>
 	
-	Equations     = <<Equation+; separator = "| ">>
-  Equations     = <| <Equation+; separator = "| ">> {bracket}
+  Equations.ListEqBar  = <
+  | <Equation+; separator = "| ">
+  >
+	Equations.ListEq     = <
+	<Equation+; separator = "| ">
+	>
 	
 	OptType.None  = <>
 	OptType.Type  = <: <Term>>
@@ -77,7 +85,10 @@ templates
 	FixBodies           = <<FixBody>>
  	FixBodies.With      = <<FixBody> with <FixBody+; separator="with "> for <Ident>>
 
-	FixBody.FixBody     = <<Ident> <Binder+> <OptAnnotation> <OptType> := <Term>>
+	FixBody.FixBody     = <
+	<Ident> <Binder+> <OptAnnotation> <OptType> :=
+		<Term>
+	>
 
 	CoFixBodies         = <<CoFixBody>>
  	CoFixBodies.With    = <<CoFixBody> with <CoFixBody+; separator="with "> for <Ident>>
@@ -102,7 +113,10 @@ templates
 	OptReturnType        = <<ReturnType>>
 	ReturnType.Return    = <return <Term>>
 
-	Equation.Eq        = [[MultPattern+; separator=" | "] => [Term]]
+	Equation.Eq        = [
+  [MultPattern+; separator=" | "] => [Term]
+  
+  ]
 	
 	MultPattern        = <<Pattern+; separator=", ">>
 	

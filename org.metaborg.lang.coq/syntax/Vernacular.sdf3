@@ -75,11 +75,13 @@ templates
   >
   
   Fixpoint.Fixpoint   = <
-  Fixpoint <FixBody+; separator = "\n with">.
+  Fixpoint
+    <FixBody+; separator = "\n with">.
   >
   
   Fixpoint.CoFixpoint = <
-  CoFixpoint <CoFixBody+; separator = "\n with">.
+  CoFixpoint
+    <CoFixBody+; separator = "\n with">.
   >
   
   Assertion.Assertion = <<AssertionKeyword> <Ident> <Binder*> : <Term>.>
