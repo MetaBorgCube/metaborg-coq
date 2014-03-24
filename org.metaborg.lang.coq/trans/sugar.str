@@ -12,4 +12,13 @@ rules
     
   sugar:
     Apply(Apply(Ref("cons"), x), List(tl*)) -> List([x | tl*])
-    
+  
+  sugar:
+  	Apply(Apply(Ref("pair"), x), y) -> Tuple(x, [y])
+  	where not(Tuple(_, _) := x)
+  
+  sugar:
+  	Apply(Apply(Ref("pair"), Tuple(hd, tl*)), x) -> Tuple(hd, <conc> (tl*, [x]))
+  
+  sugar:
+    Apply(Apply(Ref("prod"), x), y) -> TypeProd(x, y)

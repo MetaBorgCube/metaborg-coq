@@ -37,8 +37,6 @@ templates
 	
 	Term.Apply    = <<Term> <Term>> {left}
 	//Term.Apply    = <<Term> <Arg+>> {left}
-	Term.List     = <[<Term*; separator=";">]>
-	Term.Tuple    = <(<Term>, <Term+; separator=",">)>
 	
 	// Next one is a try for notations
 	Term.Eq       = <<Term> = <Term>>
@@ -75,7 +73,7 @@ templates
 
 context-free priorities
 
-  Term.Apply > Term.Product > {non-assoc: Term.Check Term.Cast Term.Coerce}
+  Term.Apply > Term.Product > Term.TypeProd > {non-assoc: Term.Check Term.Cast Term.Coerce}
 	
 syntax
 
@@ -131,4 +129,11 @@ templates
 	Pattern.OrPattern  = <(<OrPattern+; separator=", ">)>
 	
 	OrPattern          = <<Pattern+; separator=" | ">>
+
+templates
+
+  Term.List     = <[<Term*; separator=";">]>
+  Term.Tuple    = <(<Term>,<Term+; separator=",">)>
+  
+  Term.TypeProd = <<Term> * <Term>>
 	
