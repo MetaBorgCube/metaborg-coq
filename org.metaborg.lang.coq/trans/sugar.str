@@ -1,0 +1,15 @@
+module sugar
+
+imports include/Coq
+
+strategies
+  
+  sugar-all = bottomup(try(sugar))
+
+rules
+  sugar:
+    Ref("nil") -> List([])
+    
+  sugar:
+    Apply(Apply(Ref("cons"), x), List(tl*)) -> List([x | tl*])
+    

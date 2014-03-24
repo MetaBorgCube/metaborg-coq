@@ -37,6 +37,8 @@ templates
 	
 	Term.Apply    = <<Term> <Term>> {left}
 	//Term.Apply    = <<Term> <Arg+>> {left}
+	Term.List     = <[<Term*; separator=";">]>
+	Term.Tuple    = <(<Term>, <Term+; separator=",">)>
 	
 	// Next one is a try for notations
 	Term.Eq       = <<Term> = <Term>>
