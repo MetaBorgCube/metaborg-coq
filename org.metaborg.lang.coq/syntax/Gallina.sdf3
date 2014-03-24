@@ -38,9 +38,6 @@ templates
 	Term.Apply    = <<Term> <Term>> {left}
 	//Term.Apply    = <<Term> <Arg+>> {left}
 	
-	// Next one is a try for notations
-	Term.Eq       = <<Term> = <Term>>
-	
   Equations.ListEqBar  = <
   | <Equation+; separator = "| ">
   >
@@ -73,7 +70,7 @@ templates
 
 context-free priorities
 
-  Term.Apply > Term.Product > Term.TypeProd > {non-assoc: Term.Check Term.Cast Term.Coerce}
+  Term.Apply > Term.Product > Term.Prod > {non-assoc: Term.Check Term.Cast Term.Coerce Term.Eq Term.NotE}
 	
 syntax
 
@@ -135,5 +132,9 @@ templates
   Term.List     = <[<Term*; separator=";">]>
   Term.Tuple    = <(<Term>,<Term+; separator=",">)>
   
-  Term.TypeProd = <<Term> * <Term>>
+  Term.Prod = <<Term> * <Term>> {left}
+  Term.Eq   = <<Term> = <Term>> {non-assoc}
+  Term.NotE = [[Term] <> [Term]] {non-assoc}
+  
+  Term.EnvExtend = [{ [Term] |--> [Term], [Term] }]
 	

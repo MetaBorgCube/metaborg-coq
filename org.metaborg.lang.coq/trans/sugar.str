@@ -21,4 +21,13 @@ rules
   	Apply(Apply(Ref("pair"), Tuple(hd, tl*)), x) -> Tuple(hd, <conc> (tl*, [x]))
   
   sugar:
-    Apply(Apply(Ref("prod"), x), y) -> TypeProd(x, y)
+    Apply(Apply(Ref("prod"), x), y) -> Prod(x, y)
+  
+  sugar:
+    Apply(Ref("not"), Eq(x, y)) -> NotE(x, y)
+  
+  sugar:
+    Apply(Apply(Ref("eq"), x), y) -> Eq(x, y)
+    
+  sugar:
+  	Apply(Apply(Apply(Ref("env_extend"), env), x), y) -> EnvExtend(x, y, env)
