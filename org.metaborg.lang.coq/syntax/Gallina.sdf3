@@ -2,112 +2,130 @@ module Gallina
 
 imports Lexical
 
-templates
+templates // Figure 1.1 of the reference manual 
  
-	Term.ForAll   = <forall <Binder+>, <Term>>
+	Term.ForAll   = <forall <Binder+; separator=" ">, <Term>>
 	Term.Fun      = [fun [Binder+] => [Term]]
 	Term.Fix      = <fix <FixBodies>>
 	Term.CoFix    = <cofix <CoFixBodies>>
-	Term.Let      = 
-	  <let <Ident> <Binder*><OptType> := 
-	     <Term> 
-	   in 
-	     <Term>
-	  >
+	Term.Let      = <
+	let <Ident><OptBinders><OptType> := 
+	  <Term>
+	in
+	  <Term>
+	>
 	Term.LetFix   = <let fix <FixBody> in <Term>>
 	Term.LetCoFix = <let fix <CoFixBody> in <Term>>
-	Term.X        = <let (<Name*; separator=", ">) <OptDepRetType> := <Term> in <Term>>
-	// Term.Y        = <let ' <Pattern> <OptInTerm> := <Term> <OptReturnType> in <Term>>
-	Term.If       = <if <Term> <OptDepRetType> then <Term> else <Term>>
-	Term.Z        = <@<QualId> <Term*>>
-	
-	
-	Term.A        = <<Term> % <Ident>>
-	
-	
-	Term.Match    = <
-	match <MatchItem+; separator=", "> <OptReturnType> with
-	  <Equations>	end
-	>
+	Term.LetTuple = <let (<Name*; separator=", ">)<OptDepRetType> := <Term> in <Term>>
+	Term.LetPat   = <let ' <Pattern><OptInTerm> := <Term><OptReturnType> in <Term>>
+	Term.If       = <if <Term><OptDepRetType> then <Term> else <Term>>
 		
 	Term.Cast     = <<Term> : <Term>>  {non-assoc}
 	Term.Check    = [[Term] <: [Term]] {non-assoc}
 	Term.Coerce   = [[Term] :>]        {non-assoc}
-	Term.Product  = [[Term] -> [Term]] {right}
+	Term.Arrow    = [[Term] -> [Term]] {right}
 	
-	Term.Apply    = <<Term> <Term>> {left}
-	//Term.Apply    = <<Term> <Arg+>> {left}
+	Term.Apply    = <<Term> <Arg+>> {left}
 	
-  Equations.ListEqBar  = <
-  | <Equation+; separator = "| ">
+	Term.UnHide   = <@<QualId><OptTerms>>
+
+  Term.ScopeRef = <<Term> % <Ident>>
+	 
+  Term.Match    = <
+  match <MatchItem+; separator=", "><OptReturnType> with
+    <Equations> end
   >
-	Equations.ListEq     = <
-	<Equation+; separator = "| ">
-	>
-	
-	OptType.None  = <>
-	OptType.Type  = <: <Term>>
-	
-	// Arg        = <<Term>>
-	// Arg.Assign = <(<Ident> := <Term>)>
-	
-	Binder.Bind   = <<Name>>
-	Binder.Binds  = <(<Name+>: <Term>)>
-	Binder.Assign = <(<Name><OptType> := <Term>)>
-	
-	Name 			    = <<Ident>>
-	Name.Wld	    = <_>
+  
+  Term.Ref      = <<QualId>>
+  Term.Sort     = <<Sort>>
+  Term.Num      = <<Num>>
+  Term.WldTerm  = <_>
 
-	Term.Ref      = <<QualId>>
-	Term.Sort     = <<Sort>>
-	Term.Num      = <<Num>>
-
-	Term          = <(<Term>)> {bracket}
-		
-	Sort.Prop     = <Prop>
-	Sort.Set      = <Set>
-	Sort.Type     = <Type>
+  Term          = <(<Term>)> {bracket}
 
 context-free priorities
 
-  Term.Apply > Term.Product > Term.Prod > {non-assoc: Term.Check Term.Cast Term.Coerce Term.Eq Term.NotE}
-	
+  Term.Apply > Term.Product > {non-assoc: Term.Check Term.Cast Term.Coerce}
+
+templates
+
+  Arg.ImplicitArg = <(<Ident> := <Term>)>
+  Arg             = <<Term>>
+
+templates
+
+  Binder.Bind   = <<Name>>
+  Binder.Binds  = <(<Name+; separator=" ">: <Term>)>
+  Binder.Assign = <(<Name><OptType> := <Term>)>
+
+templates
+
+  Name          = <<Ident>>
+  Name.WldName  = <_>
+  
 syntax
 
                   <Ident-LEX> -> <QualId-CF> 
   <QualId-CF> "." <Ident-LEX> -> <QualId-CF> {cons("QId")}
-
+  
 templates
+	
+	Sort.Prop     = <Prop>
+	Sort.Set      = <Set>
+	Sort.Type     = <Type>
+
+templates // Auxiliary definitions of figure 1.1
+
+  Equations.ListEqBar  = <
+  | <Equation+; separator = "| ">
+  >
+  Equations.ListEq     = <
+  <Equation+; separator = "| ">
+  >
+  
+templates // Options
+
+  OptType.None         = <>
+  OptType.Type         = < : <Term>>
+  
+  OptInTerm.None       = <>
+  OptInTerm.In         = < in <Term>>
+  
+  OptDepRetType.None   = <>
+  OptDepRetType.DepRet = <<OptAlias> <ReturnType>>
+  
+  OptAlias.None        = <>
+  OptAlias.As          = < as <Name>>
+  
+  OptReturnType.None   = <>
+  OptReturnType        = < <ReturnType>>
+  
+  OptBinders.None      = <>
+  OptBinders           = < <Binder+; separator=" ">>
+  
+  OptTerms.None        = <>
+  OptTerms             = < <Term+; separator=" ">>
+  
+templates // Figure 1.2 of the reference manual
 
 	FixBodies           = <<FixBody>>
  	FixBodies.With      = <<FixBody> with <FixBody+; separator="with "> for <Ident>>
 
 	FixBody.FixBody     = <
-	<Ident> <Binder+> <OptAnnotation> <OptType> :=
+	<Ident> <Binder+; separator=" "><OptAnnotation><OptType> :=
 		<Term>
 	>
 
 	CoFixBodies         = <<CoFixBody>>
  	CoFixBodies.With    = <<CoFixBody> with <CoFixBody+; separator="with "> for <Ident>>
 
-	CoFixBody.CoFixBody =	<<Ident> <Binder*> <OptType> := <Term>>
+	CoFixBody.CoFixBody =	<<Ident><OptBinders><OptType> := <Term>>
 
 	OptAnnotation.None  = <>
-	OptAnnotation.Anno  = <{ struct <Ident> }>
+	OptAnnotation.Anno  = < { struct <Ident> }>
 	
-	MatchItem.MatchItem = <<Term> <OptAlias> <OptInTerm>>
+	MatchItem.MatchItem = <<Term><OptAlias><OptInTerm>>
 	
-	OptAlias.None        = <>
-	OptAlias.As          = <as <Name>>
-	
-	OptInTerm.None       = <>
-	OptInTerm.In         = <in <Term>>
-	
-	OptDepRetType.None   = <>
-	OptDepRetType.DepRet = <<OptAlias> <ReturnType>>
-	
-	OptReturnType.None   = <>
-	OptReturnType        = <<ReturnType>>
 	ReturnType.Return    = <return <Term>>
 
 	Equation.Eq        = [
@@ -117,7 +135,7 @@ templates
 	
 	MultPattern        = <<Pattern+; separator=", ">>
 	
-	Pattern.QidPattern = <<QualId> <Pattern+>>
+	Pattern.QidPattern = <<QualId> <Pattern+; separator=" ">>
 	Pattern.AsPattern  = <<Pattern> as <Ident>>
 	Pattern.XPattern   = <<Pattern> % <Ident>>
 	Pattern            = <<QualId>>
@@ -127,14 +145,4 @@ templates
 	
 	OrPattern          = <<Pattern+; separator=" | ">>
 
-templates
-
-  Term.List     = <[<Term*; separator=";">]>
-  Term.Tuple    = <(<Term>,<Term+; separator=",">)>
-  
-  Term.Prod = <<Term> * <Term>> {left}
-  Term.Eq   = <<Term> = <Term>> {non-assoc}
-  Term.NotE = [[Term] <> [Term]] {non-assoc}
-  
-  Term.EnvExtend = [{ [Term] |--> [Term], [Term] }]
 	

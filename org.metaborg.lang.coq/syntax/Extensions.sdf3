@@ -1,0 +1,16 @@
+module Extensions
+
+imports Lexical Gallina
+
+templates
+
+  Term.List     = <[<Term*; separator=";">]>
+  Term.Tuple    = <(<Term>,<Term+; separator=",">)>
+  
+  Term.Prod = <<Term> * <Term>> {left}
+  Term.Eq   = <<Term> = <Term>> {non-assoc}
+  Term.NotE = [[Term] <> [Term]] {non-assoc}
+
+context-free priorities
+
+  Term.Product > Term.Prod > {non-assoc: Term.Check Term.Cast Term.Coerce Term.Eq Term.NotE}

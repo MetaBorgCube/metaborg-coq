@@ -18,7 +18,7 @@ rules
   	where not(Tuple(_, _) := x)
   
   sugar:
-  	Apply(Apply(Ref("pair"), Tuple(hd, tl*)), x) -> Tuple(hd, <conc> (tl*, [x]))
+  	Apply(Apply(Ref("pair"), Tuple(hd, tl*)), x) -> Tuple(hd, [tl*, x])
   
   sugar:
     Apply(Apply(Ref("prod"), x), y) -> Prod(x, y)
