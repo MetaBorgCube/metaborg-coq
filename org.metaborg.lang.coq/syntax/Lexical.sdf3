@@ -54,6 +54,8 @@ lexical syntax
  	Reserved = "using"
  	Reserved = "where"
  	Reserved = "with"
+ 	
+  SingleQuote = "'"
 						
 lexical restrictions
 

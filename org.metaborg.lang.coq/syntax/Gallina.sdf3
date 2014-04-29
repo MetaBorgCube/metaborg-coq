@@ -1,56 +1,53 @@
 module Gallina
 
-imports Lexical
+imports Lexical Qid
 
 templates // Figure 1.1 of the reference manual 
  
-	Term.ForAll   = <forall <Binder+; separator=" ">, <Term>>
-	Term.Fun      = [fun [Binder+] => [Term]]
-	Term.Fix      = <fix <FixBodies>>
-	Term.CoFix    = <cofix <CoFixBodies>>
-	Term.Let      = <
+	STerm.ForAll   = <forall <Binder+>, <Term>>
+	STerm.Fun      = [fun [Binder+] => [Term]]
+	STerm.Fix      = <fix <FixBodies>>
+	STerm.CoFix    = <cofix <CoFixBodies>>
+	STerm.Let      = <
 	let <Ident><OptBinders><OptType> := 
 	  <Term>
 	in
 	  <Term>
 	>
-	Term.LetFix   = <let fix <FixBody> in <Term>>
-	Term.LetCoFix = <let fix <CoFixBody> in <Term>>
-	Term.LetTuple = <let (<Name*; separator=", ">)<OptDepRetType> := <Term> in <Term>>
-	Term.LetPat   = <let ' <Pattern><OptInTerm> := <Term><OptReturnType> in <Term>>
-	Term.If       = <if <Term><OptDepRetType> then <Term> else <Term>>
+	STerm.LetFix   = <let fix <FixBody> in <Term>>
+	STerm.LetCoFix = <let fix <CoFixBody> in <Term>>
+	STerm.LetTuple = <let (<Name*; separator=", ">)<OptDepRetType> := <Term> in <Term>>
+	STerm.LetPat   = <let <SingleQuote> <Pattern><OptInTerm> := <Term><OptReturnType> in <Term>>
+	STerm.If       = <if <Term><OptDepRetType> then <Term> else <Term>>
 		
-	Term.Cast     = <<Term> : <Term>>  {non-assoc}
-	Term.Check    = [[Term] <: [Term]] {non-assoc}
-	Term.Coerce   = [[Term] :>]        {non-assoc}
-	Term.Arrow    = [[Term] -> [Term]] {right}
+	STerm.Cast     = <<Term> : <Term>>  {non-assoc}
+	STerm.Check    = [[Term] <: [Term]] {non-assoc}
+	STerm.Coerce   = [[Term] :>]        {non-assoc}
+	STerm.Arrow    = [[Term] -> [Term]] {right}
 	
-	Term.Apply    = <<Term> <Arg+>> {left}
+	Term.Apply     = <<STerm> <Arg+>> {left, prefer}
+	Term           = <<STerm>>
 	
-	Term.UnHide   = <@<QualId><OptTerms>>
+	STerm.UnHide   = <@<QualId><OptTerms>>
 
-  Term.ScopeRef = <<Term> % <Ident>>
+  STerm.ScopeRef = <<Term> % <Ident>>
 	 
-  Term.Match    = <
+  STerm.Match    = <
   match <MatchItem+; separator=", "><OptReturnType> with
     <Equations> end
   >
   
-  Term.Ref      = <<QualId>>
-  Term.Sort     = <<Sort>>
-  Term.Num      = <<Num>>
-  Term.WldTerm  = <_>
+  STerm.Ref      = <<QualId>>
+  STerm.Sort     = <<Sort>>
+  STerm.Num      = <<Num>>
+  STerm.WldTerm  = <_>
 
-  Term          = <(<Term>)> {bracket}
-
-context-free priorities
-
-  Term.Apply > Term.Product > {non-assoc: Term.Check Term.Cast Term.Coerce}
+  STerm          = <(<Term>)> {bracket}
 
 templates
 
   Arg.ImplicitArg = <(<Ident> := <Term>)>
-  Arg             = <<Term>>
+  Arg             = <<STerm>>
 
 templates
 
@@ -62,11 +59,6 @@ templates
 
   Name          = <<Ident>>
   Name.WldName  = <_>
-  
-syntax
-
-                  <Ident-LEX> -> <QualId-CF> 
-  <QualId-CF> "." <Ident-LEX> -> <QualId-CF> {cons("QId")}
   
 templates
 	
@@ -85,25 +77,25 @@ templates // Auxiliary definitions of figure 1.1
   
 templates // Options
 
-  OptType.None         = <>
+  OptType.Noneo1         = <>
   OptType.Type         = < : <Term>>
   
-  OptInTerm.None       = <>
+  OptInTerm.Noneo2       = <>
   OptInTerm.In         = < in <Term>>
   
-  OptDepRetType.None   = <>
+  OptDepRetType.Noneo3   = <>
   OptDepRetType.DepRet = <<OptAlias> <ReturnType>>
   
-  OptAlias.None        = <>
+  OptAlias.Noneo4        = <>
   OptAlias.As          = < as <Name>>
   
-  OptReturnType.None   = <>
+  OptReturnType.Noneo5   = <>
   OptReturnType        = < <ReturnType>>
   
-  OptBinders.None      = <>
+  OptBinders.Noneo6      = <>
   OptBinders           = < <Binder+; separator=" ">>
   
-  OptTerms.None        = <>
+  OptTerms.Noneo7        = <>
   OptTerms             = < <Term+; separator=" ">>
   
 templates // Figure 1.2 of the reference manual
@@ -121,7 +113,7 @@ templates // Figure 1.2 of the reference manual
 
 	CoFixBody.CoFixBody =	<<Ident><OptBinders><OptType> := <Term>>
 
-	OptAnnotation.None  = <>
+	OptAnnotation.Noneo8  = <>
 	OptAnnotation.Anno  = < { struct <Ident> }>
 	
 	MatchItem.MatchItem = <<Term><OptAlias><OptInTerm>>
@@ -144,5 +136,18 @@ templates // Figure 1.2 of the reference manual
 	Pattern.OrPattern  = <(<OrPattern+; separator=", ">)>
 	
 	OrPattern          = <<Pattern+; separator=" | ">>
+	
+templates // Extensions
+
+  STerm.List  = <[<Term*; separator=";">]>
+  STerm.Tuple = <(<Term>,<Term+; separator=",">)>
+  
+  STerm.Prod  = <<Term> * <Term>>  {left}
+  STerm.Eq    = <<Term> = <Term>>  {non-assoc}
+  STerm.NotE  = [[Term] <> [Term]] {non-assoc}
+
+context-free priorities
+
+  Term.Apply > STerm.Arrow > STerm.Prod > {non-assoc: STerm.Check STerm.Cast STerm.Coerce STerm.Eq STerm.NotE}
 
 	

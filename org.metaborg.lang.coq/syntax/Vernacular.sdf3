@@ -43,13 +43,13 @@ templates
   AssumsPar.Pars = <(<Ident+> : <Term>)> 
   
   Definition.Def = <
-  Definition <Ident> <Binder*> <OptType> := 
+  Definition <Ident><OptBinders><OptType> := 
   <Term>
   .
   >
   
   Definition.Let = <
-  Let <Ident> <Binder*> <OptType> := 
+  Let <Ident><OptBinders><OptType> := 
   <Term>.
   >
   
@@ -62,7 +62,7 @@ templates
   >
 
   ConsDecl.ConsDecl =  <
-  <Ident> <Binder*> <OptType>
+  <Ident><OptBinders><OptType>
   
   >
   
@@ -70,7 +70,7 @@ templates
   ConsDecls.ListDecl =  <<ConsDecl+; separator = "| ">>   
   
   IndBody.Induc = <
-  <Ident> <Binder*> <OptType> :=
+  <Ident><OptBinders><OptType> :=
   <ConsDecls>
   >
   
@@ -84,7 +84,7 @@ templates
     <CoFixBody+; separator = "\n with">.
   >
   
-  Assertion.Assertion = <<AssertionKeyword> <Ident> <Binder*> : <Term>.>
+  Assertion.Assertion = <<AssertionKeyword> <Ident><OptBinders> : <Term>.>
   
  // Proof.Qed     = <Proof. ... Qed .>
  // Proof.Defined = <Proof . ... Defined .>

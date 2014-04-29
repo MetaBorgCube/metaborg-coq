@@ -11,23 +11,20 @@ rules
     Ref("nil") -> List([])
     
   sugar:
-    Apply(Apply(Ref("cons"), x), List(tl*)) -> List([x | tl*])
+    Apply(Ref("cons"), [x, List(tl*)]) -> List([x | tl*])
   
   sugar:
-  	Apply(Apply(Ref("pair"), x), y) -> Tuple(x, [y])
+  	Apply(Ref("pair"), [x, y]) -> Tuple(x, [y])
   	where not(Tuple(_, _) := x)
   
   sugar:
-  	Apply(Apply(Ref("pair"), Tuple(hd, tl*)), x) -> Tuple(hd, [tl*, x])
+  	Apply(Ref("pair"), [Tuple(hd, tl*), x]) -> Tuple(hd, [tl*, x])
   
   sugar:
-    Apply(Apply(Ref("prod"), x), y) -> Prod(x, y)
+    Apply(Ref("prod"), [x, y]) -> Prod(x, y)
   
   sugar:
-    Apply(Ref("not"), Eq(x, y)) -> NotE(x, y)
+    Apply(Ref("not"), [Eq(x, y)]) -> NotE(x, y)
   
   sugar:
-    Apply(Apply(Ref("eq"), x), y) -> Eq(x, y)
-    
-  sugar:
-  	Apply(Apply(Apply(Ref("env_extend"), env), x), y) -> EnvExtend(x, y, env)
+    Apply(Ref("eq"), [x, y]) -> Eq(x, y)
