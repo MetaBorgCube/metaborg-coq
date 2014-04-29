@@ -77,25 +77,25 @@ templates // Auxiliary definitions of figure 1.1
   
 templates // Options
 
-  OptType.Noneo1         = <>
+  OptType.None         = <>
   OptType.Type         = < : <Term>>
   
-  OptInTerm.Noneo2       = <>
+  OptInTerm.None       = <>
   OptInTerm.In         = < in <Term>>
   
-  OptDepRetType.Noneo3   = <>
+  OptDepRetType.None   = <>
   OptDepRetType.DepRet = <<OptAlias> <ReturnType>>
   
-  OptAlias.Noneo4        = <>
+  OptAlias.None        = <>
   OptAlias.As          = < as <Name>>
   
-  OptReturnType.Noneo5   = <>
+  OptReturnType.None   = <>
   OptReturnType        = < <ReturnType>>
   
-  OptBinders.Noneo6      = <>
+  OptBinders.None      = <>
   OptBinders           = < <Binder+; separator=" ">>
   
-  OptTerms.Noneo7        = <>
+  OptTerms.None        = <>
   OptTerms             = < <Term+; separator=" ">>
   
 templates // Figure 1.2 of the reference manual
@@ -113,7 +113,7 @@ templates // Figure 1.2 of the reference manual
 
 	CoFixBody.CoFixBody =	<<Ident><OptBinders><OptType> := <Term>>
 
-	OptAnnotation.Noneo8  = <>
+	OptAnnotation.None  = <>
 	OptAnnotation.Anno  = < { struct <Ident> }>
 	
 	MatchItem.MatchItem = <<Term><OptAlias><OptInTerm>>
