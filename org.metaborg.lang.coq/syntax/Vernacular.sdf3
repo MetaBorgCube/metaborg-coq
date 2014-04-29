@@ -25,15 +25,19 @@ lexical syntax
   AssertionKeyword = "Definition"
   AssertionKeyword = "Example"
 
-templates
+templates 
 
   CoqFile.Sent = <<Sentence*; separator="\n\n">> 
 
-  Sentence.Assumption = <<Assumption>>
-  Sentence.Definition = <<Definition>>
-  Sentence.Inductive = <<Inductive>>
-  Sentence.Fixpoint = <<Fixpoint>>
+templates // Figure 1.3 Syntax of sentences
+
+  Sentence.Assumption     = <<Assumption>>
+  Sentence.Definition     = <<Definition>>
+  Sentence.Inductive      = <<Inductive>>
+  Sentence.Fixpoint       = <<Fixpoint>>
   Sentence.AssertionProof = <<Assertion> <Proof>>
+  
+templates // Assumptions
       
   Assumption.Assuption  = <<AssumptionKeyword> <Assums>.> 
          
@@ -42,16 +46,20 @@ templates
   
   AssumsPar.Pars = <(<Ident+> : <Term>)> 
   
+templates // Definitions
+
   Definition.Def = <
   Definition <Ident><OptBinders><OptType> := 
   <Term>
   .
   >
-  
+
   Definition.Let = <
   Let <Ident><OptBinders><OptType> := 
   <Term>.
   >
+
+templates // Inductive definitions
   
   Inductive.Ind    = <
   Inductive <IndBody+; separator = "with ">.
@@ -60,19 +68,22 @@ templates
   Inductive.CoInd  = <
   CoInductive <IndBody+; separator = "with ">.
   >
+  
+  // FIXME: Type is not optional in IndBody, but Coq seems to support it.
+  IndBody.Induc = <
+  <Ident><OptBinders><OptType> :=
+  <ConsDecls>
+  >
+    
+  ConsDecls.ListDeclBar =  <| <ConsDecl+; separator = "| ">>   
+  ConsDecls.ListDecl =  <<ConsDecl+; separator = "| ">>   
 
   ConsDecl.ConsDecl =  <
   <Ident><OptBinders><OptType>
   
   >
   
-  ConsDecls.ListDeclBar =  <| <ConsDecl+; separator = "| ">>   
-  ConsDecls.ListDecl =  <<ConsDecl+; separator = "| ">>   
-  
-  IndBody.Induc = <
-  <Ident><OptBinders><OptType> :=
-  <ConsDecls>
-  >
+templates // Fixpoints
   
   Fixpoint.Fixpoint   = <
   Fixpoint
@@ -83,12 +94,17 @@ templates
   CoFixpoint
     <CoFixBody+; separator = "\n with">.
   >
-  
+
+templates // Assertions
+
   Assertion.Assertion = <<AssertionKeyword> <Ident><OptBinders> : <Term>.>
-  
- // Proof.Qed     = <Proof. ... Qed .>
- // Proof.Defined = <Proof . ... Defined .>
-  Proof.Admitted = <Proof. Admitted.>
+
+templates // Proofs
+// TODO: Require the definition of tactics.
+  // Proof.Qed      = <Proof. <Tactic+> Qed.>
+  // Proof.Defined  = <Proof. <Tactic+> Defined.>
+  // Proof.Admitted = <Proof. <Tactic+> Admitted.>
+    Proof.Admitted = <Proof. Admitted.>
 
 template options
 
