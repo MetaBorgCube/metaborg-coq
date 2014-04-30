@@ -1,9 +1,9 @@
 module Vernacular
 
 imports 
-
   Lexical
   Gallina
+  Options
  
 lexical syntax
  
@@ -31,10 +31,10 @@ templates
 
 templates // Figure 1.3 Syntax of sentences
 
-  Sentence.Assumption     = <<Assumption>>
-  Sentence.Definition     = <<Definition>>
-  Sentence.Inductive      = <<Inductive>>
-  Sentence.Fixpoint       = <<Fixpoint>>
+  Sentence = <<Assumption>>
+  Sentence = <<Definition>>
+  Sentence = <<Inductive>>
+  Sentence = <<Fixpoint>>
   Sentence.AssertionProof = <<Assertion> <Proof>>
   
 templates // Assumptions
@@ -48,7 +48,7 @@ templates // Assumptions
   
 templates // Definitions
 
-  Definition.Def = <
+  Definition.Definition = <
   Definition <Ident><OptBinders><OptType> := 
   <Term>
   .
@@ -61,17 +61,16 @@ templates // Definitions
 
 templates // Inductive definitions
   
-  Inductive.Ind    = <
+  Inductive.Inductive    = <
   Inductive <IndBody+; separator = "with ">.
   >
   
-  Inductive.CoInd  = <
+  Inductive.CoInductive  = <
   CoInductive <IndBody+; separator = "with ">.
   >
   
-  // FIXME: Type is not optional in IndBody, but Coq seems to support it.
   IndBody.Induc = <
-  <Ident><OptBinders><OptType> :=
+  <Ident><OptBinders> : <Term> :=
   <ConsDecls>
   >
     

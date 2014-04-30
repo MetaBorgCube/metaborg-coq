@@ -27,7 +27,6 @@ lexical syntax
 	String     = "\"" StringChar* "\""
 	StringChar = ~[\"] | "\"\""
 	
-	
  	Reserved = "_"
  	Reserved = "as"
  	Reserved = "at"
@@ -56,6 +55,10 @@ lexical syntax
  	Reserved = "with"
  	
   SingleQuote = "'"
+  
+templates
+
+  Notation = <<Ident>>
 						
 lexical restrictions
 

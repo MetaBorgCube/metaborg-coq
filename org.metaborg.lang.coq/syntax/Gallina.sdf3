@@ -1,6 +1,9 @@
 module Gallina
 
-imports Lexical Qid
+imports
+  Lexical
+  Qid
+  Options
 
 templates // Figure 1.1 of the reference manual 
  
@@ -75,29 +78,6 @@ templates // Auxiliary definitions of figure 1.1
   <Equation+; separator = "| ">
   >
   
-templates // Options
-
-  OptType.None         = <>
-  OptType.Type         = < : <Term>>
-  
-  OptInTerm.None       = <>
-  OptInTerm.In         = < in <Term>>
-  
-  OptDepRetType.None   = <>
-  OptDepRetType.DepRet = <<OptAlias> <ReturnType>>
-  
-  OptAlias.None        = <>
-  OptAlias.As          = < as <Name>>
-  
-  OptReturnType.None   = <>
-  OptReturnType        = < <ReturnType>>
-  
-  OptBinders.None      = <>
-  OptBinders           = < <Binder+; separator=" ">>
-  
-  OptTerms.None        = <>
-  OptTerms             = < <Term+; separator=" ">>
-  
 templates // Figure 1.2 of the reference manual
 
 	FixBodies           = <<FixBody>>
@@ -112,9 +92,6 @@ templates // Figure 1.2 of the reference manual
  	CoFixBodies.With    = <<CoFixBody> with <CoFixBody+; separator="with "> for <Ident>>
 
 	CoFixBody.CoFixBody =	<<Ident><OptBinders><OptType> := <Term>>
-
-	OptAnnotation.None  = <>
-	OptAnnotation.Anno  = < { struct <Ident> }>
 	
 	MatchItem.MatchItem = <<Term><OptAlias><OptInTerm>>
 	

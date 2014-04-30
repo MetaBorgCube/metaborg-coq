@@ -23,6 +23,7 @@ imports
   trans/Lexical.pp.generated
   trans/Qid.pp.generated
   trans/Vernacular.pp.generated
+  trans/Options.pp.generated
 
 rules // Analysis
 	

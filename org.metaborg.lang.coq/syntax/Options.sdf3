@@ -1,0 +1,42 @@
+module Options
+
+imports
+  Lexical
+  Gallina
+
+templates // Options
+
+  OptType.None         = <>
+  OptType.Type         = < : <Term>>
+  
+  OptInTerm.None       = <>
+  OptInTerm.In         = < in <Term>>
+  
+  OptDepRetType.None   = <>
+  OptDepRetType.DepRet = <<OptAlias> <ReturnType>>
+  
+  OptAlias.None        = <>
+  OptAlias.As          = < as <Name>>
+  
+  OptReturnType.None   = <>
+  OptReturnType        = < <ReturnType>>
+  
+  OptBinders.None      = <>
+  OptBinders           = < <Binder+; separator=" ">>
+  
+  OptTerms.None        = <>
+  OptTerms             = < <Term+; separator=" ">>
+  
+  OptSort.None         = <>
+  OptSort              = < : <Sort>>
+  
+  OptAnnotation.None  = <>
+  OptAnnotation.Anno  = < { struct <Ident> }>
+  
+templates // Introduced for records:
+
+  OptIdents.None       = <>
+  OptIdents            = < <Ident+; separator=" ">>
+  
+  OptWhereNotation.None = <>
+  OptWhereNotation      = < where <Notation+; separator=" where">>
