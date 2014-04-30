@@ -8,6 +8,8 @@ lib/*.generated.str
 lib-refactoring/*.generated.str
 syntax/*.sdf
 syntax/*.generated.*
+syntax/extensions/*.sdf
+syntax/extensions/*.generated.*
 trans/*.generated.*
 utils
 .settings/org.eclipse.jdt.core.prefs
