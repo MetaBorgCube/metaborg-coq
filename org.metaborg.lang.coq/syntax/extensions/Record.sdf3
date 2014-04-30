@@ -22,8 +22,8 @@ templates
 
   Record.Record = <
   <RecordKeyword> <Ident><OptBinders><OptSort> :=
-    <OptIdents> {
-      <RecordField*; separator="; ">
+   <OptIdents> {
+      <RecordField*; separator=";\n">
     }.
   >
   
