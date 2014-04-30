@@ -1,0 +1,83 @@
+module extensions/Module
+
+// 2.5 Module system
+
+imports
+  Vernacular
+  Gallina
+  Lexical
+  Options
+  Qid
+
+templates
+
+  ModuleBindingKeyword.Import = <Import>
+  ModuleBindingKeyword.Import = <Export>
+
+templates
+
+  ModuleType.QualifiedModule        = <<QualId>>
+  ModuleType.ModuleWithDefinition   = <<ModuleType> with Definition <QualId> := <Term>>
+  ModuleType.ModuleWithModule       = <<ModuleType> with Module <QualId> := <QualId>>
+  ModuleType.QualifiedModuleSeq     = <<QualId> <QualId+>>
+  ModuleType.QualifiedModuleBangSeq = <!<QualId> <QualId+>>
+  
+templates
+
+  ModuleBinding.ModuleBinding = <<ModuleBindingKeyword> <Ident+> <ModuleType>>
+  
+templates
+
+  ModuleExpression.ModuleExpression = <<QualId> <QualId+>>
+  ModuleExpression.ModuleBangExpression = <!<QualId> <QualId+>>
+
+templates // 2.5.1 & 2.5.2
+
+  Module.Module = <
+  Module <StartModule>
+    <ModContent*>
+  End <Ident>
+  >
+
+templates // Encoding elements valid inside modules only
+
+  ModContent          = <Sentence>
+  ModContent.Includes = <Include <Ident+; separator=" <+">>
+
+templates // I'm assuming functors subsume module definitions in the grammar
+
+  StartModule.Functor      = <<Ident> <ModuleBinding+>>
+  StartModule.TypedFunctor = <<Ident> <ModuleBinding*> : <ModuleType>>
+  StartModule.SubFunctor   = [[Ident] [ModuleBinding*] <: [ModuleType+; separator=" <:"]]
+  StartModule.IOModule     = <<ModuleBindingKeyword>>
+  
+templates // 2.5.3
+
+  Module = <Module <Ident> <ModuleBinding+>                := <ModuleExpression>>
+  
+  Module = <Module <Ident> <ModuleBinding+> : <ModuleType> := <ModuleExpression>>
+  
+  Module = [Module [Ident] [ModuleBinding+] <: [ModuleType+; separator=" <:"] := [ModuleExpression]]
+  
+  Module = [Module [Ident] [ModuleBinding+] := [ModuleExpression+; separator=" <+"]]
+  
+templates // 2.5.4 & 2.5.5
+
+  Module = <
+  Module Type <Ident> <ModuleBinding+>
+    <ModContent*>
+  End <Ident>
+  >
+
+templates // 2.5.8
+
+  Sentence.Import = <Import <QualId>>
+  Sentence.Export = <Export <QualId>>
+
+templates // 2.5.6
+
+  Module = <Module Type <Ident> <ModuleBinding+> := <ModuleType+; separator=" <+">>
+
+templates // 2.5.7
+
+  Module = <Declare Module <Ident> <ModuleBinding+> : <ModuleType>>

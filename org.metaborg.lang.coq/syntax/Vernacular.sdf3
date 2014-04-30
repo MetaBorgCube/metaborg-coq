@@ -5,6 +5,8 @@ imports
   Gallina
   Options
   extensions/Record
+  extensions/Section
+  extensions/Module
  
 templates
  

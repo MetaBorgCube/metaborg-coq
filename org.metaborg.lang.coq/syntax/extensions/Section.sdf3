@@ -1,0 +1,14 @@
+module extensions/Section
+
+// 2.4 Sections
+
+imports Lexical
+
+templates
+
+  Sentence.Section = <
+  Section <Ident>
+  <Sentence*>
+  End <Ident>
+  >
+  
