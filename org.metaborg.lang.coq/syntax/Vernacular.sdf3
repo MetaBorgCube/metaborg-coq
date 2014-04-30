@@ -5,27 +5,29 @@ imports
   Gallina
   Options
  
-lexical syntax
+templates
  
-  AssumptionKeyword = "Axiom" 
-  AssumptionKeyword = "Conjecture"
-  AssumptionKeyword = "Parameter"
-  AssumptionKeyword = "Parameters"
-  AssumptionKeyword = "Variable"
-  AssumptionKeyword = "Variables"
-  AssumptionKeyword = "Hypothesis"
-  AssumptionKeyword = "Hypotheses"
-  
-  AssertionKeyword = "Theorem"
-  AssertionKeyword = "Lemma"
-  AssertionKeyword = "Remark"
-  AssertionKeyword = "Fact"
-  AssertionKeyword = "Corollary"
-  AssertionKeyword = "Proposition"
-  AssertionKeyword = "Definition"
-  AssertionKeyword = "Example"
+  AssumptionKeyword.AssumptionAxiom      = <Axiom> 
+  AssumptionKeyword.AssumptionConjecture = <Conjecture>
+  AssumptionKeyword.AssumptionParameter  = <Parameter>
+  AssumptionKeyword.AssumptionParameters = <Parameters>
+  AssumptionKeyword.AssumptionVariable   = <Variable>
+  AssumptionKeyword.AssumptionVariables  = <Variables>
+  AssumptionKeyword.AssumptionHypothesis = <Hypothesis>
+  AssumptionKeyword.AssumptionHypotheses = <Hypotheses>
 
-templates 
+templates
+
+  AssertionKeyword.AssertionTheorem     = <Theorem>
+  AssertionKeyword.AssertionLemma       = <Lemma>
+  AssertionKeyword.AssertionRemark      = <Remark>
+  AssertionKeyword.AssertionFact        = <Fact>
+  AssertionKeyword.AssertionCorollary   = <Corollary>
+  AssertionKeyword.AssertionProposition = <Proposition>
+  AssertionKeyword.AssertionDefinition  = <Definition>
+  AssertionKeyword.AssertionExample     = <Example>
+
+templates
 
   CoqFile.Sent = <<Sentence*; separator="\n\n">> 
 
@@ -39,7 +41,7 @@ templates // Figure 1.3 Syntax of sentences
   
 templates // Assumptions
       
-  Assumption.Assuption  = <<AssumptionKeyword> <Assums>.> 
+  Assumption.Assumption  = <<AssumptionKeyword> <Assums>.> 
          
   Assums.Term  = <<Ident+> : <Term>>
   Assums.Terms = <<AssumsPar+>>

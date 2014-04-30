@@ -8,11 +8,11 @@ imports
   Options
   Qid
 
-lexical syntax
+templates
 
-  RecordKeyword = "Record"
-  RecordKeyword = "Inductive"
-  RecordKeyword = "CoInductive"
+  RecordKeyword.RecordRecord      = <Record>
+  RecordKeyword.RecordInductive   = <Inductive>
+  RecordKeyword.RecordCoInductive = <CoInductive>
 
 templates
 
