@@ -4,6 +4,7 @@ imports
   Lexical
   Qid
   Options
+  extensions/Record
 
 templates // Figure 1.1 of the reference manual 
  
@@ -126,5 +127,9 @@ templates // Extensions
 context-free priorities
 
   Term.Apply > STerm.Arrow > STerm.Prod > {non-assoc: STerm.Check STerm.Cast STerm.Coerce STerm.Eq STerm.NotE}
+
+templates // Used in records:
+
+  Type = <<Term>>
 
 	

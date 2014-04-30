@@ -1,0 +1,43 @@
+module extensions/Record
+
+// Section 2.1 of the reference manual
+
+imports
+  Lexical
+  Gallina
+  Options
+  Qid
+
+lexical syntax
+
+  RecordKeyword = "Record"
+  RecordKeyword = "Inductive"
+  RecordKeyword = "CoInductive"
+
+templates
+
+  Sentence = <<Record>>
+  
+templates
+
+  Record.Record = <
+  <RecordKeyword> <Ident><OptBinders><OptSort> :=
+    <OptIdents> {
+      <RecordField*; separator="; ">
+    }.
+  >
+  
+templates
+
+  RecordField.RecFld         = <<Ident><OptBinders> : <Type><OptWhereNotation>>
+  RecordField.RecExplicitFld = <<Ident><OptBinders><OptType> := <Term>>
+  
+templates
+
+  STerm.Projection = <<Term>.(<QualId>)>
+  STerm.ProjArgs   = <<Term>.(<QualId> <Arg+>)>
+  STerm.ProjQualArgs = <<Term>.(@<QualId> <Term+>)>
+
+template options
+
+  tokenize: ".(@;"
