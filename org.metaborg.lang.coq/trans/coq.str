@@ -25,6 +25,7 @@ imports
   trans/Vernacular.pp.generated
   trans/Options.pp.generated
   trans/Record.pp.generated
+  trans/Function.pp.generated
 
 rules // Analysis
 	

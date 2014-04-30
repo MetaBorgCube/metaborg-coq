@@ -11,6 +11,7 @@ imports
 templates
 
   RecordKeyword.RecordRecord      = <Record>
+  RecordKeyword.RecordStructure   = <Structure>
   RecordKeyword.RecordInductive   = <Inductive>
   RecordKeyword.RecordCoInductive = <CoInductive>
 

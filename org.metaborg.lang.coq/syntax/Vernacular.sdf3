@@ -4,6 +4,7 @@ imports
   Lexical
   Gallina
   Options
+  extensions/Record
  
 templates
  

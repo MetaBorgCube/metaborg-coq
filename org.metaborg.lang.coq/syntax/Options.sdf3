@@ -33,7 +33,7 @@ templates // Options
   OptAnnotation.None  = <>
   OptAnnotation.Anno  = < { struct <Ident> }>
   
-templates // Introduced for records:
+templates // 2.1 Introduced for records:
 
   OptIdents.None       = <>
   OptIdents            = < <Ident+; separator=" ">>

@@ -1,0 +1,25 @@
+module extensions/Function
+
+// 2.3 Advanced recursive functions
+
+imports
+  Gallina
+  Options
+  Lexical
+
+templates
+
+  STerm.Function = <
+  Function <Ident> <Binder+; separator=" "><OptDecreaseAnnot> : <Type> 
+    <Term>
+  >
+  
+templates // Decrease annotation possibilities
+
+  OptDecreaseAnnot.None          = <>
+  OptDecreaseAnnot.DecreaseAnnot = < {<DecreaseAnnot>}>
+
+  DecreaseAnnot.DecreaseStruct  = <struct <Ident>>
+  DecreaseAnnot.DecreaseMeasure = <measure <Term> <Ident>>
+  DecreaseAnnot.DecreaseWF      = <wf <Term> <Ident>>
+  

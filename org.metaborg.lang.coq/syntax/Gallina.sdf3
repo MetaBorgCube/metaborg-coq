@@ -4,7 +4,7 @@ imports
   Lexical
   Qid
   Options
-  extensions/Record
+  extensions/Function
 
 templates // Figure 1.1 of the reference manual 
  
@@ -115,7 +115,7 @@ templates // Figure 1.2 of the reference manual
 	
 	OrPattern          = <<Pattern+; separator=" | ">>
 	
-templates // Extensions
+templates // Common notational extensions
 
   STerm.List  = <[<Term*; separator=";">]>
   STerm.Tuple = <(<Term>,<Term+; separator=",">)>
@@ -128,7 +128,7 @@ context-free priorities
 
   Term.Apply > STerm.Arrow > STerm.Prod > {non-assoc: STerm.Check STerm.Cast STerm.Coerce STerm.Eq STerm.NotE}
 
-templates // Used in records:
+templates // 2.1 Used in records:
 
   Type = <<Term>>
 
