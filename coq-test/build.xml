@@ -34,7 +34,6 @@
   <!-- Compiles the coq code using Coqc -->
   <target name="coqc" depends="clean, makecoqcdir">
     <apply executable="coqc" dir="${coqc.dir}" parallel="false" verbose="true" force="true">
-    	<arg value="-verbose" />
       <srcfile/>
       <fileset dir="${coqc.dir}" includes="*.v" />
     </apply>
