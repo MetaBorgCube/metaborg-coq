@@ -5,13 +5,6 @@
   <property name="src.dir" location="src" />
   <property name="coqc.dir" location="coqc" />
   <property name="spt.dir" location="spt" />
-  <fileset id="src.fileset" dir="${src.dir}">
-           <include name="*.v"/>
-  </fileset>
-	<pathconvert refid="src.fileset" property="src.fileprop" />
-	<pathconvert refid="src.fileset" property="coq.fileset">
-	  <map from="${src.dir}" to="${coqc.dir}" />
-	</pathconvert>
 	
   <!-- Deletes the created directories -->
   <target name="clean" description="Clean project">
@@ -40,9 +33,11 @@
 	
   <!-- Compiles the coq code using Coqc -->
   <target name="coqc" depends="clean, makecoqcdir">
-    <exec executable="coqc" dir="${coqc.dir}">
-    	<arg line="${coq.fileset}" />
-    </exec>
+    <apply executable="coqc" dir="${coqc.dir}" parallel="false" verbose="true" force="true">
+    	<arg value="-verbose" />
+      <srcfile/>
+      <fileset dir="${coqc.dir}" includes="*.v" />
+    </apply>
   </target>
 	
   <target name="main" depends="coqc">
