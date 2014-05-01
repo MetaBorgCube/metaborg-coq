@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<project name="Coq-Test" default="main" basedir=".">
+  <!-- Sets variables which can later be used. -->
+  <!-- The value of a property is accessed via ${} -->
+  <property name="src.dir" location="src" />
+  <property name="coqc.dir" location="coqc" />
+  <property name="spt.dir" location="spt" />
+  <fileset id="src.fileset" dir="${src.dir}">
+           <include name="*.v"/>
+   </fileset>
+	<pathconvert refid="src.fileset" property="coq.fileset">
+	  <map from="${src.dir}" to="${coqc.dir}" />
+	</pathconvert>
+	
+  <!-- Deletes the created directories -->
+  <target name="clean" description="Clean project">
+    <delete dir="${coqc.dir}" />
+    <delete dir="${spt.dir}" />
+  </target>
+
+  <!-- Creates the coqc directory -->
+  <target name="makecoqcdir">
+    <mkdir dir="${coqc.dir}" />
+  	<copy todir="${coqc.dir}" overwrite="true">
+  	  <fileset dir="${src.dir}" />
+  	</copy>
+  </target>
+	
+	<!-- Creates the spt directory -->
+	<target name="makesptdir">
+	  <mkdir dir="${spt.dir}" />
+  </target>
+
+	<target name="makedir" depends="makecoqcdir, makesptdir" />
+	
+  <!-- Compiles the coq code using Coqc -->
+  <target name="coqc" depends="clean, makecoqcdir">
+    <exec executable="coqc" dir="${coqc.dir}">
+    	<arg line="${coq.fileset}" />
+    </exec>
+  </target>
+
+  <!-- Creates the SPT files from the coq sources -->
+  <target name="spt" depends="clean, makesptdir" />
+	
+  <target name="main" depends="coqc, spt">
+    <description>Compiles the files and creates the SPT test cases.</description>
+  </target>
+</project> 
