@@ -15,4 +15,5 @@ language General properties
   table         : include/Coq.tbl
   start symbols : Start
   provider      : include/coq.ctree
+  observer      : editor-analyze (multifile)
   
