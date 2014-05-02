@@ -2,13 +2,21 @@ module extensions/Section
 
 // 2.4 Sections
 
-imports Lexical
+imports Lexical Vernacular
 
 templates
 
-  Sentence.Section = <
-  Section <Ident>
-  <Sentence*>
-  End <Ident>
+  Section.Section = <
+  Section <Ident>.
+  <SectionContent*>
+  End <Ident>.
   >
-  
+
+templates
+
+  SectionContent = <<Sentence>>
+  SectionContent = <<Section>>
+
+lexical syntax
+
+  Reserved = "Section"

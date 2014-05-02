@@ -4,12 +4,17 @@ imports
 
   Vernacular
   Gallina
+  extensions/Module
+  extensions/Section
   
-context-free start-symbols
+context-free start-symbols Start
 
-	Start
-	
-context-free syntax
+templates
 
-	Start = CoqFile
-	 
+	Start = <<CoqFile*; separator="\n\n">>
+
+templates
+
+  CoqFile = <<Sentence>> 
+  CoqFile = <<Module>>
+  CoqFile = <<Section>> 

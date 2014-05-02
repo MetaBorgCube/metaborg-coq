@@ -26,6 +26,8 @@ imports
   trans/Options.pp.generated
   trans/Record.pp.generated
   trans/Function.pp.generated
+  trans/Section.pp.generated
+  trans/Module.pp.generated
 
 rules // Analysis
 	

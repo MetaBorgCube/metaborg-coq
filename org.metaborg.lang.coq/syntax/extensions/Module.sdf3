@@ -8,11 +8,21 @@ imports
   Lexical
   Options
   Qid
+  extensions/Section
+
+lexical syntax
+
+  Reserved = "Import"
+  Reserved = "Export"
+  Reserved = "Module"
+  Reserved = "End"
+  Reserved = "Require"
+  Reserved = "Type"
 
 templates
 
   ModuleBindingKeyword.Import = <Import>
-  ModuleBindingKeyword.Import = <Export>
+  ModuleBindingKeyword.Export = <Export>
 
 templates
 
@@ -22,62 +32,72 @@ templates
   ModuleType.QualifiedModuleSeq     = <<QualId> <QualId+>>
   ModuleType.QualifiedModuleBangSeq = <!<QualId> <QualId+>>
   
+  OptModuleType.None = <>
+  OptModuleType      = < : <ModuleType>>
+  
 templates
 
   ModuleBinding.ModuleBinding = <<ModuleBindingKeyword> <Ident+> <ModuleType>>
   
-templates
-
-  ModuleExpression.ModuleExpression = <<QualId> <QualId+>>
-  ModuleExpression.ModuleBangExpression = <!<QualId> <QualId+>>
+  OptModuleBindings.None = <>
+  OptModuleBindings      = < <ModuleBinding+; separator=" ">>
+  
+//   
+// templates
+// 
+//   ModuleExpression.ModuleExpression = <<QualId> <QualId+>>
+//   ModuleExpression.ModuleBangExpression = <!<QualId> <QualId+>>
 
 templates // 2.5.1 & 2.5.2
 
   Module.Module = <
-  Module <StartModule>
+  Module <StartModule>.
     <ModContent*>
-  End <Ident>
+  End <Ident>.
   >
 
 templates // Encoding elements valid inside modules only
 
-  ModContent          = <Sentence>
-  ModContent.Includes = <Include <Ident+; separator=" <+">>
+  ModContent = <<Sentence>>
+  ModContent = <<Section>>
+  ModContent = <<Module>>
+  ModContent.Include = <Include <Ident+; separator=" <+">>
 
 templates // I'm assuming functors subsume module definitions in the grammar
 
-  StartModule.Functor      = <<Ident> <ModuleBinding+>>
-  StartModule.TypedFunctor = <<Ident> <ModuleBinding*> : <ModuleType>>
-  StartModule.SubFunctor   = [[Ident] [ModuleBinding*] <: [ModuleType+; separator=" <:"]]
+  StartModule.Functor      = <<Ident><OptModuleBindings><OptModuleType>>
+  StartModule.SubFunctor   = [[Ident][OptModuleBindings] <: [ModuleType+; separator=" <:"]]
   StartModule.IOModule     = <<ModuleBindingKeyword>>
   
 templates // 2.5.3
-
-  Module = <Module <Ident> <ModuleBinding+>                := <ModuleExpression>>
-  
-  Module = <Module <Ident> <ModuleBinding+> : <ModuleType> := <ModuleExpression>>
-  
-  Module = [Module [Ident] [ModuleBinding+] <: [ModuleType+; separator=" <:"] := [ModuleExpression]]
-  
-  Module = [Module [Ident] [ModuleBinding+] := [ModuleExpression+; separator=" <+"]]
-  
+// 
+//   Module = <Module <Ident> <ModuleBinding+>                := <ModuleExpression>>
+//   
+//   Module = <Module <Ident> <ModuleBinding+> : <ModuleType> := <ModuleExpression>>
+//   
+//   Module = [Module [Ident] [ModuleBinding+] <: [ModuleType+; separator=" <:"] := [ModuleExpression]]
+//   
+//   Module = [Module [Ident] [ModuleBinding+] := [ModuleExpression+; separator=" <+"]]
+//   
 templates // 2.5.4 & 2.5.5
 
-  Module = <
-  Module Type <Ident> <ModuleBinding+>
+  Module.ModuleType = <
+  Module Type <Ident><OptModuleBindings>.
     <ModContent*>
-  End <Ident>
+  End <Ident>.
   >
 
 templates // 2.5.8
 
-  Sentence.Import = <Import <QualId>>
-  Sentence.Export = <Export <QualId>>
-
-templates // 2.5.6
-
-  Module = <Module Type <Ident> <ModuleBinding+> := <ModuleType+; separator=" <+">>
-
-templates // 2.5.7
-
-  Module = <Declare Module <Ident> <ModuleBinding+> : <ModuleType>>
+  Sentence.Import = <Import <QualId>.>
+  Sentence.RequireImp = <Require Import <QualId>.>
+  Sentence.Export = <Export <QualId>.>
+  Sentence.RequireExp = <Require Export <QualId>.>
+// 
+// templates // 2.5.6
+// 
+//   Module = <Module Type <Ident> <ModuleBinding+> := <ModuleType+; separator=" <+">>
+// 
+// templates // 2.5.7
+// 
+//   Module = <Declare Module <Ident> <ModuleBinding+> : <ModuleType>>
