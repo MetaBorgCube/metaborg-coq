@@ -14,9 +14,8 @@
 
   <!-- Creates the coqc directory -->
   <target name="makecoqcdir">
-    <mkdir dir="${coqc.dir}" />
-  	<copy todir="${coqc.dir}" overwrite="true">
-  	  <fileset dir="${src.dir}" />
+  	<copy todir="${coqc.dir}">
+  	  <fileset dir="${src.dir}" excludes="*.pp.v" includes="*.v" />
   	</copy>
   </target>
 	
