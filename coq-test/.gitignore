@@ -1,0 +1,5 @@
+.cache
+coqc
+spt
+src/*.pp.v
+src/*.aterm
