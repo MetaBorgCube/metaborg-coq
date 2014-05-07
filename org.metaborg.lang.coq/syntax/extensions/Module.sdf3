@@ -14,16 +14,29 @@ lexical syntax
 
   Reserved = "Import"
   Reserved = "Export"
+  Reserved = "Include"
+  Reserved = "Inline"
   Reserved = "Module"
   Reserved = "End"
   Reserved = "Require"
   Reserved = "Type"
+
+templates // Interactive modules (2.5.1 - 2.5.2)
+
+  Module.InteractiveModule = <
+  Module <OptModuleBindingKeywordPrefix><Ident><OptModuleBindings><OptModuleTypes>.
+    <ModContent*; separator="\n\n">
+  End <Ident>.
+  >
 
 templates
 
   ModuleBindingKeyword.Import = <Import>
   ModuleBindingKeyword.Export = <Export>
 
+  OptModuleBindingKeywordPrefix.None = <>
+  OptModuleBindingKeywordPrefix      = <<ModuleBindingKeyword> >
+  
 templates
 
   ModuleType.QualifiedModule        = <<QualId>>
@@ -31,73 +44,64 @@ templates
   ModuleType.ModuleWithModule       = <<ModuleType> with Module <QualId> := <QualId>>
   ModuleType.QualifiedModuleSeq     = <<QualId> <QualId+>>
   ModuleType.QualifiedModuleBangSeq = <!<QualId> <QualId+>>
+  ModuleType                        = <(<ModuleType>)> {bracket}
   
-  OptModuleType.None = <>
-  OptModuleType      = < : <ModuleType>>
+  OptModuleTypes.None = <>
+  OptModuleTypes      = < : <ModuleType>>
+  OptModuleTypes      = [ <: [ModuleType*; separator=" <:"]]
   
 templates
 
-  ModuleBinding.ModuleBinding = <<ModuleBindingKeyword> <Ident+> <ModuleType>>
+  ModuleBinding.ModuleBinding = <(<OptModuleBindingKeywordPrefix><Ident+> <ModuleType>)>
   
   OptModuleBindings.None = <>
   OptModuleBindings      = < <ModuleBinding+; separator=" ">>
-  
-//   
-// templates
-// 
-//   ModuleExpression.ModuleExpression = <<QualId> <QualId+>>
-//   ModuleExpression.ModuleBangExpression = <!<QualId> <QualId+>>
-
-templates // 2.5.1 & 2.5.2
-
-  Module.Module = <
-  Module <StartModule>.
-    <ModContent*>
-  End <Ident>.
-  >
 
 templates // Encoding elements valid inside modules only
 
-  ModContent = <<Sentence>>
-  ModContent = <<Section>>
-  ModContent = <<Module>>
+  ModContent         = <<Sentence>>
+  ModContent         = <<Module>>
   ModContent.Include = <Include <Ident+; separator=" <+">>
-
-templates // I'm assuming functors subsume module definitions in the grammar
-
-  StartModule.Functor      = <<Ident><OptModuleBindings><OptModuleType>>
-  StartModule.SubFunctor   = [[Ident][OptModuleBindings] <: [ModuleType+; separator=" <:"]]
-  StartModule.IOModule     = <<ModuleBindingKeyword>>
   
-templates // 2.5.3
-// 
-//   Module = <Module <Ident> <ModuleBinding+>                := <ModuleExpression>>
-//   
-//   Module = <Module <Ident> <ModuleBinding+> : <ModuleType> := <ModuleExpression>>
-//   
-//   Module = [Module [Ident] [ModuleBinding+] <: [ModuleType+; separator=" <:"] := [ModuleExpression]]
-//   
-//   Module = [Module [Ident] [ModuleBinding+] := [ModuleExpression+; separator=" <+"]]
-//   
-templates // 2.5.4 & 2.5.5
+templates // Module definition (2.5.3)
+
+  Module.ModuleDef = <
+  Module <Ident><OptModuleBindings><OptModuleTypes> := <ModuleExpression>.
+  > {prefer}
+  Module.ModuleDefs = <
+  Module <Ident><OptModuleBindings> := <ModuleExpression+; separator="<+">
+  >
+  
+templates
+
+  ModuleExpression.ModuleExpression     =  <<QualId+>>
+  ModuleExpression.ModuleBangExpression = <!<QualId+>>
+  
+templates // Interactive Module Type definitions (2.5.4 & 2.5.5)
 
   Module.ModuleType = <
   Module Type <Ident><OptModuleBindings>.
-    <ModContent*>
+    <ModTypeContent*>
   End <Ident>.
   >
+  
+templates
 
-templates // 2.5.8
+  ModTypeContent                  = <<ModContent>>
+  ModTypeContent.InlineAssumption = <<AssumptionKeyword> Inline <Assums>>
+  
+templates // Module type equality (2.5.6)
 
-  Sentence.Import = <Import <QualId>.>
-  Sentence.RequireImp = <Require Import <QualId>.>
-  Sentence.Export = <Export <QualId>.>
-  Sentence.RequireExp = <Require Export <QualId>.>
-// 
-// templates // 2.5.6
-// 
-//   Module = <Module Type <Ident> <ModuleBinding+> := <ModuleType+; separator=" <+">>
-// 
-// templates // 2.5.7
-// 
-//   Module = <Declare Module <Ident> <ModuleBinding+> : <ModuleType>>
+  Module.ModuleTypeDef = <
+  Module Type <Ident><OptModuleBindings> := <ModuleType+; separator=" <+">
+  >
+
+templates // Imports (2.5.8)
+
+  Sentence.Import = <<OptRequirePrefix>Import <QualId>.>
+  Sentence.Export = <<OptRequirePrefix>Export <QualId>.>
+  
+templates
+
+  OptRequirePrefix.None = <>
+  OptRequirePrefix      = <Require >
