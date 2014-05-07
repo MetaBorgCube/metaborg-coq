@@ -9,7 +9,7 @@ imports
 
 templates
 
-  STerm.Function = <
+  Term.Function = <
   Function <Ident> <Binder+; separator=" "><OptDecreaseAnnot> : <Type> 
     <Term>
   >

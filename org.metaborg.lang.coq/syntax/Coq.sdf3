@@ -17,4 +17,3 @@ templates
 
   CoqFile = <<Sentence>> 
   CoqFile = <<Module>>
-  CoqFile = <<Section>> 

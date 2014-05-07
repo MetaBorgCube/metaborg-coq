@@ -35,9 +35,9 @@ templates
   
 templates
 
-  STerm.Projection = <<Term>.(<QualId>)>
-  STerm.ProjArgs   = <<Term>.(<QualId> <Arg+>)>
-  STerm.ProjQualArgs = <<Term>.(@<QualId> <Term+>)>
+  Term.Projection = <<Term>.(<QualId>)>
+  Term.ProjArgs   = <<Term>.(<QualId> <Arg+>)>
+  Term.ProjQualArgs = <<Term>.(@<QualId> <Term+>)>
 
 template options
 

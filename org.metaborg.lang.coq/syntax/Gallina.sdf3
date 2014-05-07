@@ -8,50 +8,49 @@ imports
 
 templates // Figure 1.1 of the reference manual 
  
-	STerm.ForAll   = <forall <Binder+>, <Term>>
-	STerm.Fun      = [fun [Binder+] => [Term]]
-	STerm.Fix      = <fix <FixBodies>>
-	STerm.CoFix    = <cofix <CoFixBodies>>
-	STerm.Let      = <
+	Term.ForAll   = <forall <Binder+>, <Term>>
+	Term.Fun      = [fun [Binder+] => [Term]]
+	Term.Fix      = <fix <FixBodies>>
+	Term.CoFix    = <cofix <CoFixBodies>>
+	Term.Let      = <
 	let <Ident><OptBinders><OptType> := 
 	  <Term>
 	in
 	  <Term>
 	>
-	STerm.LetFix   = <let fix <FixBody> in <Term>>
-	STerm.LetCoFix = <let fix <CoFixBody> in <Term>>
-	STerm.LetTuple = <let (<Name*; separator=", ">)<OptDepRetType> := <Term> in <Term>>
-	STerm.LetPat   = <let <SingleQuote> <Pattern><OptInTerm> := <Term><OptReturnType> in <Term>>
-	STerm.If       = <if <Term><OptDepRetType> then <Term> else <Term>>
+	Term.LetFix   = <let fix <FixBody> in <Term>>
+	Term.LetCoFix = <let fix <CoFixBody> in <Term>>
+	Term.LetTuple = <let (<Name*; separator=", ">)<OptDepRetType> := <Term> in <Term>>
+	Term.LetPat   = <let <SingleQuote> <Pattern><OptInTerm> := <Term><OptReturnType> in <Term>>
+	Term.If       = <if <Term><OptDepRetType> then <Term> else <Term>>
 		
-	STerm.Cast     = <<Term> : <Term>>  {non-assoc}
-	STerm.Check    = [[Term] <: [Term]] {non-assoc}
-	STerm.Coerce   = [[Term] :>]        {non-assoc}
-	STerm.Arrow    = [[Term] -> [Term]] {right}
+	Term.Cast     = <<Term> : <Term>>  {non-assoc}
+	Term.Check    = [[Term] <: [Term]] {non-assoc}
+	Term.Coerce   = [[Term] :>]        {non-assoc}
+	Term.Arrow    = [[Term] -> [Term]] {right}
 	
-	Term.Apply     = <<STerm> <Arg+>> {left, prefer}
-	Term           = <<STerm>>
+	Term.Apply     = <<Term> <Term>> {left, prefer}
+	Term.ApplyImplicit = <<Term> <Arg>>
 	
-	STerm.UnHide   = <@<QualId><OptTerms>>
+	Term.UnHide   = <@<QualId><OptTerms>>
 
-  STerm.ScopeRef = <<Term> % <Ident>>
+  Term.ScopeRef = <<Term> % <Ident>>
 	 
-  STerm.Match    = <
+  Term.Match    = <
   match <MatchItem+; separator=", "><OptReturnType> with
     <Equations> end
   >
   
-  STerm.Ref      = <<QualId>>
-  STerm.Sort     = <<Sort>>
-  STerm.Num      = <<Num>>
-  STerm.WldTerm  = <_>
+  Term.Ref      = <<QualId>>
+  Term.Sort     = <<Sort>>
+  Term.Num      = <<Num>>
+  Term.WldTerm  = <_>
 
-  STerm          = <(<Term>)> {bracket}
+  Term          = <(<Term>)> {bracket}
 
 templates
 
   Arg.ImplicitArg = <(<Ident> := <Term>)>
-  Arg             = <<STerm>>
 
 templates
 
@@ -117,16 +116,16 @@ templates // Figure 1.2 of the reference manual
 	
 templates // Common notational extensions
 
-  STerm.List  = <[<Term*; separator=";">]>
-  STerm.Tuple = <(<Term>,<Term+; separator=",">)>
+  Term.List  = <[<Term*; separator=";">]>
+  Term.Tuple = <(<Term>,<Term+; separator=",">)>
   
-  STerm.Prod  = <<Term> * <Term>>  {left}
-  STerm.Eq    = <<Term> = <Term>>  {non-assoc}
-  STerm.NotE  = [[Term] <> [Term]] {non-assoc}
+  Term.Prod  = <<Term> * <Term>>  {left}
+  Term.Eq    = <<Term> = <Term>>  {non-assoc}
+  Term.NotE  = [[Term] <> [Term]] {non-assoc}
 
 context-free priorities
 
-  Term.Apply > STerm.Arrow > STerm.Prod > {non-assoc: STerm.Check STerm.Cast STerm.Coerce STerm.Eq STerm.NotE}
+  Term.Apply > Term.Arrow > Term.Prod > {non-assoc: Term.Check Term.Cast Term.Coerce Term.Eq Term.NotE}
 
 templates // 2.1 Used in records:
 

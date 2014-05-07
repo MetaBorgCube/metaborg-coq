@@ -6,16 +6,11 @@ imports Lexical Vernacular
 
 templates
 
-  Section.Section = <
+  Sentence.Section = <
   Section <Ident>.
-  <SectionContent*>
+  <Sentence*; separator="\n\n">
   End <Ident>.
   >
-
-templates
-
-  SectionContent = <<Sentence>>
-  SectionContent = <<Section>>
 
 lexical syntax
 
