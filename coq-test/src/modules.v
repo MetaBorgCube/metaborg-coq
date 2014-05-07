@@ -11,7 +11,7 @@ Module Type SIG.
   Parameter x : T.
 End SIG.
 
-Module N  :  SIG with Definition T := nat  :=  M.
+Module N : SIG with Definition T := nat  :=  M.
 
 Module Type SIG'.
   Definition T : Set := nat.
@@ -45,7 +45,8 @@ Module Mod <: SIG2.
   Module M2 := M.
 End Mod.
 
-Module N'' : SIG := M. 
+Module N'' : SIG := M.
+
 Module N''' : SIG.
   Definition T := nat.
   Definition x := 0.
@@ -57,3 +58,15 @@ End Mod'.
 
 Import Mod'.
 
+(* My definitions to improve the testing: *)
+
+Module Type SIG3.
+  Parameter T : Set.
+  Parameter x : T.
+End SIG3.
+
+Module A : SIG3 with Definition T := nat.
+  Definition T : Set := nat.
+  Definition x : T := 0.
+  Definition A : Set := nat.
+End A.
