@@ -122,10 +122,11 @@ templates // Common notational extensions
   Term.Prod  = <<Term> * <Term>>  {left}
   Term.Eq    = <<Term> = <Term>>  {non-assoc}
   Term.NotE  = [[Term] <> [Term]] {non-assoc}
+  Term.And   = <<Term> /\ <Term>>
 
 context-free priorities
 
-  Term.Apply > Term.Arrow > Term.Prod > {non-assoc: Term.Check Term.Cast Term.Coerce Term.Eq Term.NotE}
+  Term.Apply > Term.Arrow > Term.Prod > {non-assoc: Term.Check Term.Cast Term.Coerce Term.Eq Term.NotE} > Term.And
 
 templates // 2.1 Used in records:
 
