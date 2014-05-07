@@ -1,0 +1,25 @@
+module tactic/Toplevel
+
+imports
+  Qid
+  Lexical
+  tactic/expr
+
+lexical syntax
+
+  Reserved = "Ltac"
+  Reserved = "Local"
+
+templates // Figure 9.3 of the reference manual
+
+  Sentence.Tactic = <<OptLocalPrefix>Ltac <LtacDef+; separator=" with">>
+  Tactic = <<TExpr>>
+
+templates
+
+  OptLocalPrefix.None        = <>
+  OptLocalPrefix.LocalTactic = <Local >
+
+templates
+
+  LtacDef = <<QualId> <Ident*> := <TExpr>>

@@ -1,0 +1,148 @@
+module tactic/Expr
+
+imports
+  Lexical
+  Gallina
+  Qid
+  Options
+  tactic/AtomicTactic
+
+templates
+
+  TExpr.ExprSeq     = <<TExpr>; <TExpr>> {left}
+  TExpr.ExprSeqAlts = <<TExpr>; [<TExpr*; separator=" | ">]>
+  TExpr             = <<TacExpr3>>
+
+templates
+
+  TacExpr3.DoTac    = <do<OptTime> <TacExpr3>>
+  TacExpr3.Progress = <progress <TacExpr3>>
+  TacExpr3.Repeat   = <repeat <TacExpr3>>
+  TacExpr3.Try      = <try <TacExpr3>>
+  TacExpr3.Timeout  = <timeout<OptTime> <TacExpr3>>
+  TacExpr3          = <<TacExpr2>>
+
+templates
+
+  OptTime.None = <>
+  OptTime.Natural = <<Num> >
+  OptTime         = <<Ident> >
+
+templates
+
+  TacExpr2.Alts = <<TacExpr1> || <TacExpr3>>
+  TacExpr2      = <<TacExpr1>>
+
+templates
+
+  TacExpr1.Fun           = [fun [Ident+] => [TAtom]]
+  TacExpr1.LetTac        = <let<OptRec> <LetClause+; separator=" with"> in <TAtom>>
+  TacExpr1.MatchGoal     = <match goal with <ContextRule+; separator=" |"> end>
+  TacExpr1.MatchRevGoal  = <match reverse goal with <ContextRule+; separator=" |"> end>
+  TacExpr1.MatchExpr     = <match <TExpr> with <MatchRule+; separator=" |"> end>
+  TacExpr1.LMatchGoal    = <lazymatch goal with <ContextRule+; separator=" |"> end>
+  TacExpr1.LMatchRevGoal = <lazymatch reverse goal with <ContextRule+; separator=" |"> end>
+  TacExpr1.LMatchExpr    = <lazymatch <TExpr> with <MatchRule+; separator=" |"> end>
+  TacExpr1.Abstract      = <abstract <TAtom>>
+  TacExpr1.AbstractUsing = <abstract <TAtom> using <Ident>>
+  TacExpr1.First         = <first [ <TExpr+; separator=" |"> ]>
+  TacExpr1.Solve         = <solve [ <TExpr+; separator=" |"> ]>
+  TacExpr1.IdTac         = <idtac <MsgToken*>>
+  TacExpr1.Fail          = <fail<OptNatural><OptMsgTokens>>
+  TacExpr1.Fresh         = <fresh<OptString>>
+  TacExpr1.Context       = <context <Ident><OptTerm>>
+  TacExpr1.Eval          = <eval <RedExpr> in <Term>>
+  TacExpr1.TypeOf        = <type of <Term>>
+  TacExpr1.External      = <external <String> <String> <TacArg+>>
+  TacExpr1.ConstrTerm    = <constr : <Term>>
+  TacExpr1               = <<AtomicTactic>>
+  TacExpr1.QualTactic    = <<QualId> <TacArg+>>
+  TacExpr1               = <<TAtom>>
+
+templates // Options
+  
+  OptRec.None = <>
+  OptRec.Rec  = < rec>
+
+  OptMsgTokens.None = <>
+  OptMsgTokens      = < <MsgToken+>>
+  
+  OptNatural.None = <>
+  OptNatural      = <<Num>>
+  
+  OptString.None = <>
+  OptString      = <<Num>>
+  
+  OptTerm.None = <>
+  OptTerm      = <<Term>>
+  
+templates
+
+	TAtom      = <<QualId>>
+	TAtom      = <<Num>>
+	TAtom      = <(TExpr)> {bracket}
+  TAtom.Unit = <()>
+
+template options
+
+  tokenize: "()"
+
+templates
+
+  MsgToken = <<String>>
+  MsgToken = <<Ident>>
+  MsgToken = <<Num>>
+
+templates
+
+  TacArg         = <<QualId>>
+  TacArg.Unit    = <()>
+  TacArg.AtomArg = <ltac : <TAtom>>
+  TacArg         = <<Term>>
+
+templates
+
+  LetClause.LetClause = <<Ident><OptNames> := <TExpr>>
+  OptNames.None = <>
+  OptNames      = < <Name+>>
+  
+templates
+
+  ContextRule.PatContext = [[OptContextHyps]|- [Pattern] => [TExpr]]
+  ContextRule.WldContext = [_ => [TExpr]]
+  
+  OptContextHyps.None = <>
+  OptContextHyps      = <<ContextHyp+; separator=", "> >
+
+templates
+
+  ContextHyp.ContextHyp       = <<Name> : <Pattern>>
+  ContextHyp.ContextHypAssign = <<Name> := <Pattern><OptCPattern>>
+  
+  OptCPattern.None        = <>
+  OptCPattern.OptCPattern = < : <Pattern>>
+
+templates
+
+  MatchRule.MatchPattern    = [[Pattern] => [TExpr]]
+  MatchRule.MatchContext    = [context[OptIdent][OptPattern] => [TExpr]]
+  MatchRule.MatchAppContext = [appcontext[OptIdent][OptPattern] => [TExpr]]
+  MatchRule.MatchWld        = [_ => [TExpr]]
+  
+  OptIdent.None = <>
+  OptIdent      = < <Ident>>
+  
+  OptPattern.None = <>
+  OptPattern      = < <Pattern>>
+  
+templates
+
+  RedExpr.RedRed     = <red>
+  RedExpr.RedHnf     = <hnf>
+  RedExpr.RedCompute = <compute>
+  RedExpr.RedSimpl   = <simpl>
+  RedExpr.RedCbv     = <cbv>
+  RedExpr.RedLazy    = <lazy>
+  RedExpr.RedUnfold  = <unfold>
+  RedExpr.RedFold    = <fold>
+  RedExpr.RedPattern = <pattern>

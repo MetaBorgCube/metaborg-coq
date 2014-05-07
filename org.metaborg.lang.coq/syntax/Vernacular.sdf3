@@ -7,6 +7,7 @@ imports
   extensions/Record
   extensions/Section
   extensions/Module
+  tactic/Toplevel
  
 templates
  
@@ -108,11 +109,9 @@ templates // Assertions
   Assertion.Assertion = <<AssertionKeyword> <Ident><OptBinders> : <Term>.>
 
 templates // Proofs
-// TODO: Require the definition of tactics.
-  // Proof.Qed      = <Proof. <Tactic+> Qed.>
-  // Proof.Defined  = <Proof. <Tactic+> Defined.>
-  // Proof.Admitted = <Proof. <Tactic+> Admitted.>
-    Proof.Admitted = <Proof. Admitted.>
+  Proof.Qed      = <Proof. <Tactic+> Qed.>
+  Proof.Defined  = <Proof. <Tactic+> Defined.>
+  Proof.Admitted = <Proof. <Tactic+> Admitted.>
 
 template options
 

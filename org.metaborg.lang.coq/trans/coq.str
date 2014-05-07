@@ -28,6 +28,9 @@ imports
   trans/Function.pp.generated
   trans/Section.pp.generated
   trans/Module.pp.generated
+  trans/Expr.pp.generated
+  trans/Toplevel.pp.generated
+  trans/AtomicTactic.pp.generated
 
 rules // Analysis
 	

@@ -1,0 +1,17 @@
+module tactic/AtomicTactic
+
+imports
+  Lexical
+
+templates
+
+  AtomicTactic.AtomicTactic = <<OptNumPrefix><ATactic>.>
+  OptNumPrefix.None = <>
+  OptNumPrefix      = <<Num> : >
+
+templates
+
+  ATactic.Auto = <auto>
+  ATactic.Assumption = <assumption>
+  
+  // More to come later...
