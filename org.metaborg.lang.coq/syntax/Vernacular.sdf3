@@ -20,10 +20,6 @@ templates
   AssumptionKeyword.AssumptionHypothesis = <Hypothesis>
   AssumptionKeyword.AssumptionHypotheses = <Hypotheses>
 
-syntax
-
-  <AssumptionKeyword-LEX> -> <Reserved-LEX>
-
 templates
 
   AssertionKeyword.AssertionTheorem     = <Theorem>
@@ -37,7 +33,8 @@ templates
   
 syntax
 
-  <AssertionKeyword-LEX> -> <Reserved-LEX>
+  <AssumptionKeyword-CF> -> <Reserved-LEX> 
+  <AssertionKeyword-CF> -> <Reserved-LEX>
 
 templates // Figure 1.3 Syntax of sentences
 
