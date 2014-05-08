@@ -1,0 +1,25 @@
+module extensions/Coercion
+
+imports
+  Qid
+  Gallina
+
+templates
+
+  Sentence.Coercion = [
+  Coercion [QualId] : [Class] >-> [Class].
+  ]
+
+lexical syntax
+
+  Reserved = "Coercion"
+
+templates
+
+  // We accept any term, although only three cases are possible:
+  // Sortclass, the class of sorts; its objects are the terms whose type is a sort.
+  // Funclass, the class of functions; its objects are all the terms with a functional type,
+  //            i.e. of form forall  x:A, B.
+  // Any QualId that refer to terms of the types above are also acceptable.
+  Class = <<Term>>
+  
