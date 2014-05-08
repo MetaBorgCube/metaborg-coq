@@ -126,7 +126,7 @@ templates // Common notational extensions
 
 context-free priorities
 
-  Term.Apply > Term.Arrow > Term.Prod > {non-assoc: Term.Check Term.Cast Term.Coerce Term.Eq Term.NotE} > Term.And
+  Term.ForAll > Term.Apply > Term.Arrow > Term.Prod > {non-assoc: Term.Check Term.Cast Term.Coerce Term.Eq Term.NotE} > Term.And
 
 templates // 2.1 Used in records:
 

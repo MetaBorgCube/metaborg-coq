@@ -6,6 +6,7 @@ imports
   Gallina
   extensions/Module
   extensions/Section
+  tactic/Toplevel
   
 context-free start-symbols Start
 

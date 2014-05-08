@@ -1,0 +1,43 @@
+module tactic/AtomicTactic
+imports Lexical Qid
+
+exports
+  lexical syntax
+    "intros"       -> Reserved 
+    "auto"         -> Reserved 
+    "assumption"   -> Reserved 
+    "inversion"    -> Reserved 
+    "subst"        -> Reserved 
+    "eauto"        -> Reserved 
+    "induction"    -> Reserved 
+    "destruct"     -> Reserved 
+    "left"         -> Reserved 
+    "right"        -> Reserved 
+    "reflexivity"  -> Reserved 
+    "discriminate" -> Reserved 
+
+  context-free syntax
+    OptNumPrefix ATactic -> AtomicTactic {cons("AtomicTactic")}
+                         -> OptNumPrefix {cons("None")}
+    Num ":"              -> OptNumPrefix 
+
+  context-free syntax
+    CONTENTCOMPLETE -> AtomicTactic {cons("COMPLETION-AtomicTactic")}
+    CONTENTCOMPLETE -> OptNumPrefix {cons("COMPLETION-OptNumPrefix")}
+
+  context-free syntax
+    "intros"           -> ATactic {cons("Intros")}
+    "auto"             -> ATactic {cons("Auto")}
+    "eauto"            -> ATactic {cons("EAuto")}
+    "assumption"       -> ATactic {cons("Assumption")}
+    "inversion" QualId -> ATactic {cons("Inversion")}
+    "subst"            -> ATactic {cons("Subst")}
+    "induction" QualId -> ATactic {cons("Induction")}
+    "destruct" QualId  -> ATactic {cons("Destruct")}
+    "left"             -> ATactic {cons("Left")}
+    "right"            -> ATactic {cons("Right")}
+    "reflexivity"      -> ATactic {cons("Reflexivity")}
+    "discriminate"     -> ATactic {cons("Discriminate")}
+
+  context-free syntax
+    CONTENTCOMPLETE -> ATactic {cons("COMPLETION-ATactic")}

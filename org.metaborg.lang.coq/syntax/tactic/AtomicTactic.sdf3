@@ -2,16 +2,42 @@ module tactic/AtomicTactic
 
 imports
   Lexical
+  Qid
+
+lexical syntax
+
+  Reserved = "intros"
+  Reserved = "auto"
+  Reserved = "assumption"
+  Reserved = "inversion"
+  Reserved = "subst"
+  Reserved = "eauto"
+  Reserved = "induction"
+  Reserved = "destruct"
+  Reserved = "left"
+  Reserved = "right"
+  Reserved = "reflexivity"
+  Reserved = "discriminate"
 
 templates
 
-  AtomicTactic.AtomicTactic = <<OptNumPrefix><ATactic>.>
+  AtomicTactic.AtomicTactic = <<OptNumPrefix><ATactic>>
   OptNumPrefix.None = <>
   OptNumPrefix      = <<Num> : >
 
 templates
 
-  ATactic.Auto = <auto>
-  ATactic.Assumption = <assumption>
+  ATactic.Intros       = <intros>
+  ATactic.Auto         = <auto>
+  ATactic.EAuto        = <eauto>
+  ATactic.Assumption   = <assumption>
+  ATactic.Inversion    = <inversion <QualId>>
+  ATactic.Subst        = <subst>
+  ATactic.Induction    = <induction <QualId>>
+  ATactic.Destruct     = <destruct <QualId>>
+  ATactic.Left         = <left>
+  ATactic.Right        = <right>
+  ATactic.Reflexivity  = <reflexivity>
+  ATactic.Discriminate = <discriminate>
   
   // More to come later...

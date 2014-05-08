@@ -58,6 +58,7 @@ templates
   TacExpr1               = <<AtomicTactic>>
   TacExpr1.QualTactic    = <<QualId> <TacArg+>>
   TacExpr1               = <<TAtom>>
+  TacExpr1               = <(<TExpr>)> {bracket}
 
 templates // Options
   

@@ -1,0 +1,28 @@
+module tactic/Toplevel
+imports Qid Lexical tactic/Expr Vernacular
+
+exports
+  lexical syntax
+    "Ltac"  -> Reserved 
+    "Local" -> Reserved 
+
+  context-free syntax
+    OptLocalPrefix "Ltac" {LtacDef "with"}+ -> Sentence {cons("Ltac")}
+    TExpr "."                               -> Tactic   {cons("Tactic")}
+
+  context-free syntax
+    CONTENTCOMPLETE -> Sentence {cons("COMPLETION-Sentence")}
+    CONTENTCOMPLETE -> Tactic   {cons("COMPLETION-Tactic")}
+
+  context-free syntax
+            -> OptLocalPrefix {cons("None")}
+    "Local" -> OptLocalPrefix {cons("LocalTactic")}
+
+  context-free syntax
+    CONTENTCOMPLETE -> OptLocalPrefix {cons("COMPLETION-OptLocalPrefix")}
+
+  context-free syntax
+    QualId Ident* ":=" TExpr -> LtacDef {cons("LtacDef")}
+
+  context-free syntax
+    CONTENTCOMPLETE -> LtacDef {cons("COMPLETION-LtacDef")}
