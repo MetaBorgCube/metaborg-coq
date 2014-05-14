@@ -1,0 +1,29 @@
+module mix/CoqMix[E]
+
+imports
+  Coq
+  
+exports
+  context-free syntax
+    "T" "|[" Term     "]|" -> E {cons("ToMetaExpr")}
+    "C" "|[" CoqFile* "]|" -> E {cons("ToMetaExpr")}
+
+variables
+
+  T                 -> Term      {prefer}
+  D                 -> ConsDecls {prefer}
+  "decl" [0-9]* "*" -> ConsDecl* {prefer}
+  
+lexical syntax
+	
+  ("x"|"y"|"t") [0-9]* "'"* -> T
+  "env" [0-9]* "'"*         -> T
+  "k" [0-9]* "'"*           -> T
+  
+  "decls" [0-9]* -> D
+  
+lexical restrictions
+	
+	T -/- [a-zA-Z0-9\_\']
+	D -/- [a-zA-Z0-9\_\']
+  

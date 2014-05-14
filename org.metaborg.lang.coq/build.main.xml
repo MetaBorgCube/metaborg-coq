@@ -1,45 +1,95 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="Coq" default="all">
-    
-    <!-- Key input modules -->
-    <property name="sdfmodule" value="Coq"/>
-    <property name="metasdfmodule" value="Stratego-Coq"/>
-    <property name="esvmodule" value="Coq"/>
-    <property name="strmodule" value="coq"/>
+  
+  <!-- Key input modules -->
+  <property name="sdfmodule" value="Coq"/>
+  <property name="metasdfmodule" value="Stratego-Coq"/>
+  <property name="esvmodule" value="Coq"/>
+  <property name="strmodule" value="coq"/>
 
-    <!-- Project directories -->
-    <property name="trans" location="trans"/>
-    <property name="src-gen" location="editor/java"/>
-    <property name="syntax" location="syntax"/>
-    <property name="include" location="include"/>
-    <property name="lib" location="lib"/>
-    <property name="build" location="bin"/>
-    <property name="dist" location="bin/dist"/>
-    
-    <!-- Imports -->
-    <property name="build.sdf.imports" value=""/>
-    <property name="build.stratego.args" value="
-                    --library
-                    -I &quot;${trans}&quot;
-                    -I &quot;${basedir}&quot;
-                    -la stratego-lib -la stratego-sglr -la stratego-gpp -la stratego-xtc -la stratego-aterm -la stratego-parallel"/>
-    
-    <!-- Optional: external .def and .jar locations
-    <property name="externaldef" location="syntax/${sdfmodule}.def"/>
-    <property name="externaljar" value="../lib.jar"/>
-    <property name="externaljarflags" value="-la org.lib"/>
-    -->
+  <!-- Project directories -->
+  <property name="trans" location="trans"/>
+  <property name="src-gen" location="editor/java"/>
+  <property name="syntax" location="syntax"/>
+  <property name="include" location="include"/>
+  <property name="lib" location="lib"/>
+  <property name="build" location="bin"/>
+  <property name="dist" location="bin/dist"/>
+  
+  <!-- Imports -->
+  <property name="build.sdf.imports" value="
+  	-I &quot;${basedir}/syntax/mix&quot;
+  	"/>
+  <property name="build.stratego.args" value="
+                  --library
+                  -I &quot;${trans}&quot;
+                  -I &quot;${basedir}&quot;
+                  -la stratego-lib -la stratego-sglr -la stratego-gpp -la stratego-xtc -la stratego-aterm -la stratego-parallel"/>
+  
+  <!-- Optional: external .def and .jar locations
+  <property name="externaldef" location="syntax/${sdfmodule}.def"/>
+  <property name="externaljar" value="../lib.jar"/>
+  <property name="externaljarflags" value="-la org.lib"/>
+  -->
 
-    <!-- Environment configuration for command-line builds -->
-    <condition property="build.strategoxt.sdf" value="${eclipse.spoofaximp.nativeprefix}" else="">
-        <isset property="eclipse.spoofaximp.nativeprefix"/>
-    </condition>
-    <property name="build.strategoxt.stratego" location="${user.home}/.nix-profile/bin"/>
+  <!-- Environment configuration for command-line builds -->
+  <condition property="build.strategoxt.sdf" value="${eclipse.spoofaximp.nativeprefix}" else="">
+      <isset property="eclipse.spoofaximp.nativeprefix"/>
+  </condition>
+  <property name="build.strategoxt.stratego" location="${user.home}/.nix-profile/bin"/>
 		
 	<!-- used for building inside of Eclipse -->
     <import file="build.generated.xml"/>   
 
-    <!-- Main target -->
-    <target name="all" depends="spoofaximp.default.ctree"/>
+  <!-- Main target -->
+  <target name="all" depends="spoofaximp.default.ctree"/>
+
+
+  <!-- Copy target -->
+  <target name="copy-to-project">
+  	<!-- Copying files -->
+  	<copy overwrite="yes" todir="${basedir}/../../${dstproj}/trans/coq-semantics/syntax/">
+  		<fileset dir="${basedir}/trans/">
+        <include name="*.pp.generated.str"/>
+        <exclude name="CoqMix.pp.generated.str"/>
+      </fileset>
+  		<filterchain>
+        <replaceregex pattern=".generated" replace=".generated${line.separator}imports${line.separator}  trans/coq-semantics/syntax/-${line.separator}  libstratego-gpp${line.separator}  lib/runtime/tmpl/pp" flags="gi"/>
+        <replaceregex pattern="prettyprint-" replace="prettyprintCoq-" flags="gi"/>
+  	  </filterchain>
+  	</copy>
+    <copy overwrite="yes" file="${basedir}/include/Coq.str"              todir="${basedir}/../../${dstproj}/trans/coq-semantics/syntax/" />
+    <copy overwrite="yes" file="${basedir}/include/Coq-parenthesize.str" todir="${basedir}/../../${dstproj}/trans/coq-semantics/">
+    	<filterchain>
+    		<replaceregex pattern="module include/Coq-parenthesize" replace = "module trans/coq-semantics/Coq-parenthesize" />
+    		<replaceregex pattern="include/Coq" replace="trans/coq-semantics/syntax/Coq" />
+    	</filterchain>
+    </copy>
+    <copy overwrite="yes" file="${basedir}/include/Stratego-Coq.def"     todir="${basedir}/../../${dstproj}/lib/Coq/" />
+    <copy overwrite="yes" file="${basedir}/include/Stratego-Coq.tbl"     todir="${basedir}/../../${dstproj}/include/" />
+  </target>
+	
+  <target name="copy-to-sdf">
+    <antcall target="copy-to-project">
+      <param name="dstproj" value="sdf/org.strategoxt.imp.editors.template"/>
+    </antcall>
+  </target>
+  <target name="copy-to-ts">
+    <antcall target="copy-to-project">
+      <param name="dstproj" value="ts/org.metaborg.meta.lang.ts"/>
+    </antcall>
+  </target>
+  <target name="copy-to-nabl">
+    <antcall target="copy-to-project">
+      <param name="dstproj" value="nabl/org.metaborg.meta.lang.nabl"/>
+    </antcall>
+  </target>
+	<target name="copy-to-dynsem">
+	  <antcall target="copy-to-project">
+	    <param name="dstproj" value="dynsem"/>
+    </antcall>
+  </target>
+	
+	<target name="copy-to-all" depends="copy-to-sdf, copy-to-ts, copy-to-nabl, copy-to-dynsem" />
 </project>
 
