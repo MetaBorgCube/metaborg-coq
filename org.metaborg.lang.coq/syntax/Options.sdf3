@@ -7,10 +7,10 @@ imports
 templates // Options
 
   OptType.None         = <>
-  OptType.Type         = < : <Term>>
+  OptType              = < : <Term>>
   
   OptInTerm.None       = <>
-  OptInTerm.In         = < in <Term>>
+  OptInTerm            = < in <Term>>
   
   OptDepRetType.None   = <>
   OptDepRetType.DepRet = <<OptAlias> <ReturnType>>

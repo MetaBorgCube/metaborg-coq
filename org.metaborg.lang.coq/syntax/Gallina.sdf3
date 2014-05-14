@@ -42,8 +42,8 @@ templates // Figure 1.1 of the reference manual
   >
   
   Term.Ref      = <<QualId>>
-  Term.Sort     = <<Sort>>
-  Term.Num      = <<Num>>
+  Term          = <<Sort>>
+  Term          = <<Num>>
   Term.WldTerm  = <_>
 
   Term          = <(<Term>)> {bracket}
