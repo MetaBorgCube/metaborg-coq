@@ -6,6 +6,8 @@
   <property name="metasdfmodule" value="Stratego-Coq"/>
   <property name="esvmodule" value="Coq"/>
   <property name="strmodule" value="coq"/>
+  <property name="ppmodule" value="Coq-pp" />
+  <property name="sigmodule" value="Coq-sig" />
 
   <!-- Project directories -->
   <property name="trans" location="trans"/>
@@ -15,6 +17,8 @@
   <property name="lib" location="lib"/>
   <property name="build" location="bin"/>
   <property name="dist" location="bin/dist"/>
+  <property name="pp" location="src-gen/pp" />
+  <property name="signatures" location="src-gen/signatures" />
   
   <!-- Imports -->
   <property name="build.sdf.imports" value="
@@ -42,7 +46,7 @@
     <import file="build.generated.xml"/>   
 
   <!-- Main target -->
-  <target name="all" depends="spoofaximp.default.ctree"/>
+  <target name="all" depends="spoofaximp.default.ctree,coq-pp.jar"/>
 
 
   <!-- Copy target -->
@@ -91,5 +95,73 @@
   </target>
 	
 	<target name="copy-to-all" depends="copy-to-sdf, copy-to-ts, copy-to-nabl, copy-to-dynsem" />
+	
+  <!-- Target to create jar from generated pp and signatures, shamelessly copied from the SDF project -->
+  <target name="coq-pp.jar" depends="utils-files">
+    <available file="${pp}/${ppmodule}.str" property="pp.module.enabled" />
+    <fail message="Main pp file '${ppmodule}.str' not found.">
+      <condition>
+        <not>
+          <isset property="pp.module.enabled" />
+        </not>
+      </condition>
+    </fail>
+    
+    <available file="${src-gen}/pplib/Main.java" property="pp-java.available" />
+    <antcall target="pp.jar.deletehelper" />
+    
+    <strj input="${pp}/${ppmodule}.str" output="${src-gen}/pplib/Main.java" package="trans">
+          <strjargs> 
+            <arg value="--clean" />
+            <arg line="${build.stratego.args}" />
+            <arg line="${externaljarflags}" />
+            <arg line="${externaldefimport}" />
+            <arg line="-I &quot;${lib}&quot; -I &quot;${include}&quot; --cache-dir &quot;${basedir}/.cache&quot;" />
+            <arg value="--library" />
+          </strjargs>
+          <str-deps>
+            <srcfiles dir="${pp}" includes="**/*.str" />
+            <srcfiles dir="${signatures}" includes="**/*.str" />
+          </str-deps>
+        </strj>
+    <mkdir dir="${build}/pplib" />
+    
+    <sequential>
+      <uptodate-mio input="${src-gen}/pplib/Main.java" output="${include}/${ppmodule}.jar" type="javac">
+        <action>
+          <javac srcdir="${src-gen}" includes="pplib/**" destdir="${build}" source="1.7" target="1.7" debug="on">
+            <classpath>
+              <pathelement path="utils/strategoxt.jar:${src-gen}${externaljarimport1}${externaljarimport2}${java.jar.classpath}" />
+            </classpath>
+          </javac>
+          <!-- copy imported terms -->
+          <copy todir="${build}/pplib">
+              <fileset dir="${src-gen}/pplib" excludes="**/*.java" />
+          </copy>
+          <!--copy file="${src-gen}/pplib/Main.rtree" tofile="${pp}/${ppmodule}.rtree" /-->
+          <jar basedir="${build}" includes="pplib/**" destfile="${include}/${ppmodule}.tmp.jar" />
+          <move file="${include}/${ppmodule}.tmp.jar" tofile="${include}/${ppmodule}.jar" />
+            <delete>
+            <fileset dir="${build}" includes="pplib/**" />
+          </delete> 
+        </action>
+        <deps>
+          <srcfiles dir="${src-gen}/pplib/" includes="**/*.java" />
+        </deps>
+      </uptodate-mio>
+    </sequential>  
+  </target>
+
+	<taskdef classpath="${eclipse.spoofaximp.strategojar}" resource="org/strategoxt/antcontrib/strategoxt-antlib.xml"/>
+
+	<taskdef classpath="${eclipse.spoofaximp.strategojar}" resource="net/sf/antcontrib/antlib.xml"/>
+	
+	<target name="pp.jar.deletehelper" unless="pp-java.available">
+	  <delete>
+	    <fileset dir="${src-gen}" includes="pplib/**" />
+      <fileset dir="${build}" includes="pplib/**" />
+      <!-- fileset dir="${pp}" includes="${ppmodule}.rtree" /-->
+    </delete>
+  </target>
 </project>
 
