@@ -8,32 +8,32 @@ imports
   Options
   Qid
 
-templates
+context-free syntax
 
   RecordKeyword.RecordRecord      = <Record>
   RecordKeyword.RecordStructure   = <Structure>
   RecordKeyword.RecordInductive   = <Inductive>
   RecordKeyword.RecordCoInductive = <CoInductive>
 
-templates
+context-free syntax
 
   Sentence = <<Record>>
-  
-templates
+
+context-free syntax
 
   Record.Record = <
   <RecordKeyword> <Ident><OptBinders><OptSort> :=
    <OptIdents> {
-      <RecordField*; separator=";\n">
+      <{RecordField ";\n"}*>
     }.
   >
-  
-templates
+
+context-free syntax
 
   RecordField.RecFld         = <<Ident><OptBinders> : <Type><OptWhereNotation>>
   RecordField.RecExplicitFld = <<Ident><OptBinders><OptType> := <Term>>
-  
-templates
+
+context-free syntax
 
   Term.Projection = <<Term>.(<QualId>)>
   Term.ProjArgs   = <<Term>.(<QualId> <Arg+>)>

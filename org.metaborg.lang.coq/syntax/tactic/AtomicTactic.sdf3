@@ -19,13 +19,13 @@ lexical syntax
   Reserved = "reflexivity"
   Reserved = "discriminate"
 
-templates
+context-free syntax
 
   AtomicTactic.AtomicTactic = <<OptNumPrefix><ATactic>>
   OptNumPrefix.None = <>
   OptNumPrefix      = <<Num> : >
 
-templates
+context-free syntax
 
   ATactic.Intros       = <intros>
   ATactic.Auto         = <auto>

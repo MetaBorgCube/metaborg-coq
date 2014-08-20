@@ -1,7 +1,5 @@
 module Coq-Menus
 
-imports Coq-Menus.generated
-
   // This file can be used to specify toolbar menus.
   // See the imported file for a brief introduction and examples.
 

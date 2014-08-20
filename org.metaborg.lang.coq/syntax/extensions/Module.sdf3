@@ -21,15 +21,15 @@ lexical syntax
   Reserved = "Require"
   Reserved = "Type"
 
-templates // Interactive modules (2.5.1 - 2.5.2)
+context-free syntax // Interactive modules (2.5.1 - 2.5.2)
 
   Module.InteractiveModule = <
   Module <OptModuleBindingKeywordPrefix><Ident><OptModuleBindings><OptModuleTypes>.
-    <ModContent*; separator="\n\n">
+    <{ModContent "\n\n"}*>
   End <Ident>.
   >
 
-templates
+context-free syntax
 
   ModuleBindingKeyword.Import = <Import>
   ModuleBindingKeyword.Export = <Export>
@@ -37,7 +37,7 @@ templates
   OptModuleBindingKeywordPrefix.None = <>
   OptModuleBindingKeywordPrefix      = <<ModuleBindingKeyword> >
   
-templates
+context-free syntax
 
   ModuleType.QualifiedModule        = <<QualId>>
   ModuleType.ModuleWithDefinition   = <<ModuleType> with Definition <QualId> := <Term>>
@@ -48,36 +48,36 @@ templates
   
   OptModuleTypes.None = <>
   OptModuleTypes      = < : <ModuleType>>
-  OptModuleTypes      = [ <: [ModuleType*; separator=" <:"]]
+  OptModuleTypes      = [ <: [{ModuleType " <:"}*]]
   
-templates
+context-free syntax
 
   ModuleBinding.ModuleBinding = <(<OptModuleBindingKeywordPrefix><Ident+> <ModuleType>)>
   
   OptModuleBindings.None = <>
-  OptModuleBindings      = < <ModuleBinding+; separator=" ">>
+  OptModuleBindings      = < <{ModuleBinding " "}+>>
 
-templates // Encoding elements valid inside modules only
+context-free syntax // Encoding elements valid inside modules only
 
   ModContent         = <<Sentence>>
   ModContent         = <<Module>>
-  ModContent.Include = <Include <Ident+; separator=" <+">>
+  ModContent.Include = <Include <{Ident "<+"}+>>
   
-templates // Module definition (2.5.3)
+context-free syntax // Module definition (2.5.3)
 
   Module.ModuleDef = <
   Module <Ident><OptModuleBindings><OptModuleTypes> := <ModuleExpression>.
   > {prefer}
   Module.ModuleDefs = <
-  Module <Ident><OptModuleBindings> := <ModuleExpression+; separator="<+">
+  Module <Ident><OptModuleBindings> := <{ModuleExpression "<+"}+>
   >
   
-templates
+context-free syntax
 
   ModuleExpression.ModuleExpression     =  <<QualId+>>
   ModuleExpression.ModuleBangExpression = <!<QualId+>>
   
-templates // Interactive Module Type definitions (2.5.4 & 2.5.5)
+context-free syntax // Interactive Module Type definitions (2.5.4 & 2.5.5)
 
   Module.ModuleType = <
   Module Type <Ident><OptModuleBindings>.
@@ -85,23 +85,23 @@ templates // Interactive Module Type definitions (2.5.4 & 2.5.5)
   End <Ident>.
   >
   
-templates
+context-free syntax
 
   ModTypeContent                  = <<ModContent>>
   ModTypeContent.InlineAssumption = <<AssumptionKeyword> Inline <Assums>>
   
-templates // Module type equality (2.5.6)
+context-free syntax // Module type equality (2.5.6)
 
   Module.ModuleTypeDef = <
-  Module Type <Ident><OptModuleBindings> := <ModuleType+; separator=" <+">
+  Module Type <Ident><OptModuleBindings> := <{ModuleType " <+"}+>
   >
 
-templates // Imports (2.5.8)
+context-free syntax // Imports (2.5.8)
 
   Sentence.Import = <<OptRequirePrefix>Import <QualId>.>
   Sentence.Export = <<OptRequirePrefix>Export <QualId>.>
   
-templates
+context-free syntax
 
   OptRequirePrefix.None = <>
   OptRequirePrefix      = <Require >

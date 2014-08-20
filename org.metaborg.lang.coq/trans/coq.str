@@ -18,19 +18,7 @@ imports
 	generate
 	sugar
   editor/Coq-Outliner
-  trans/Coq.pp.generated
-  trans/Gallina.pp.generated
-  trans/Lexical.pp.generated
-  trans/Qid.pp.generated
-  trans/Vernacular.pp.generated
-  trans/Options.pp.generated
-  trans/Record.pp.generated
-  trans/Function.pp.generated
-  trans/Section.pp.generated
-  trans/Module.pp.generated
-  trans/Expr.pp.generated
-  trans/Toplevel.pp.generated
-  trans/AtomicTactic.pp.generated
+  src-gen/pp/-
 
 rules // Analysis
 	

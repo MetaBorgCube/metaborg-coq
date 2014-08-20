@@ -11,16 +11,16 @@ lexical syntax
   Reserved = "Ltac"
   Reserved = "Local"
 
-templates // Figure 9.3 of the reference manual
+context-free syntax // Figure 9.3 of the reference manual
 
-  Sentence.Ltac = <<OptLocalPrefix>Ltac <LtacDef+; separator=" with">>
+  Sentence.Ltac = <<OptLocalPrefix>Ltac <{LtacDef " with"}+>>
   Tactic.Tactic = <<TExpr>.>
 
-templates
+context-free syntax
 
   OptLocalPrefix.None        = <>
   OptLocalPrefix.LocalTactic = <Local >
 
-templates
+context-free syntax
 
   LtacDef.LtacDef = <<QualId> <Ident*> := <TExpr>>

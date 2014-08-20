@@ -4,7 +4,7 @@ imports
 
 	Lexical
 
-templates
+context-free syntax
 
 	QualId         = <<Ident>>
 	QualId.QId     = <<QualId>.<Ident>>

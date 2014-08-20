@@ -56,7 +56,7 @@ lexical syntax
  	
   SingleQuote = "'"
   
-templates
+context-free syntax
 
   Notation = <<Ident>>
 						

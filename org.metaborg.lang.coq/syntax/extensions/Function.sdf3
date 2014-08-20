@@ -7,14 +7,14 @@ imports
   Options
   Lexical
 
-templates
+context-free syntax
 
   Term.Function = <
-  Function <Ident> <Binder+; separator=" "><OptDecreaseAnnot> : <Type> 
+  Function <Ident> <{Binder " "}+><OptDecreaseAnnot> : <Type> 
     <Term>
   >
   
-templates // Decrease annotation possibilities
+context-free syntax // Decrease annotation possibilities
 
   OptDecreaseAnnot.None          = <>
   OptDecreaseAnnot.DecreaseAnnot = < {<DecreaseAnnot>}>

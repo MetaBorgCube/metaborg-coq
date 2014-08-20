@@ -4,11 +4,12 @@ module extensions/Section
 
 imports Lexical Vernacular
 
-templates
+
+context-free syntax
 
   Sentence.Section = <
   Section <Ident>.
-  <Sentence*; separator="\n\n">
+  <{Sentence "\n\n"}*>
   End <Ident>.
   >
 

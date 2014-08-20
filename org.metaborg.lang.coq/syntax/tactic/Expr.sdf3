@@ -7,13 +7,13 @@ imports
   Options
   tactic/AtomicTactic
 
-templates
+context-free syntax
 
   TExpr.ExprSeq     = <<TExpr>; <TExpr>> {left}
-  TExpr.ExprSeqAlts = <<TExpr>; [<TExpr*; separator=" | ">]>
+  TExpr.ExprSeqAlts = <<TExpr>; [<{TExpr " | "}*>]>
   TExpr             = <<TacExpr3>>
 
-templates
+context-free syntax
 
   TacExpr3.DoTac    = <do<OptTime> <TacExpr3>>
   TacExpr3.Progress = <progress <TacExpr3>>
@@ -22,31 +22,31 @@ templates
   TacExpr3.Timeout  = <timeout<OptTime> <TacExpr3>>
   TacExpr3          = <<TacExpr2>>
 
-templates
+context-free syntax
 
   OptTime.None = <>
   OptTime.Natural = <<Num> >
   OptTime         = <<Ident> >
 
-templates
+context-free syntax
 
   TacExpr2.Alts = <<TacExpr1> || <TacExpr3>>
   TacExpr2      = <<TacExpr1>>
 
-templates
+context-free syntax
 
   TacExpr1.Fun           = [fun [Ident+] => [TAtom]]
-  TacExpr1.LetTac        = <let<OptRec> <LetClause+; separator=" with"> in <TAtom>>
-  TacExpr1.MatchGoal     = <match goal with <ContextRule+; separator=" |"> end>
-  TacExpr1.MatchRevGoal  = <match reverse goal with <ContextRule+; separator=" |"> end>
-  TacExpr1.MatchExpr     = <match <TExpr> with <MatchRule+; separator=" |"> end>
-  TacExpr1.LMatchGoal    = <lazymatch goal with <ContextRule+; separator=" |"> end>
-  TacExpr1.LMatchRevGoal = <lazymatch reverse goal with <ContextRule+; separator=" |"> end>
-  TacExpr1.LMatchExpr    = <lazymatch <TExpr> with <MatchRule+; separator=" |"> end>
+  TacExpr1.LetTac        = <let<OptRec> <{LetClause " with"}+> in <TAtom>> 
+  TacExpr1.MatchGoal     = <match goal with <{ContextRule " |"}+> end> 
+  TacExpr1.MatchRevGoal  = <match reverse goal with <{ContextRule " |"}+> end> 
+  TacExpr1.MatchExpr     = <match <TExpr> with <{MatchRule " |"}+> end> 
+  TacExpr1.LMatchGoal    = <lazymatch goal with <{ContextRule " |"}+> end> 
+  TacExpr1.LMatchRevGoal = <lazymatch reverse goal with <{ContextRule " |"}+> end> 
+  TacExpr1.LMatchExpr    = <lazymatch <TExpr> with <{MatchRule " |"}+> end> 
   TacExpr1.Abstract      = <abstract <TAtom>>
   TacExpr1.AbstractUsing = <abstract <TAtom> using <Ident>>
-  TacExpr1.First         = <first [ <TExpr+; separator=" |"> ]>
-  TacExpr1.Solve         = <solve [ <TExpr+; separator=" |"> ]>
+  TacExpr1.First         = <first [ <{TExpr " |"}+> ]>
+  TacExpr1.Solve         = <solve [ <{TExpr " |"}+> ]>
   TacExpr1.IdTac         = <idtac <MsgToken*>>
   TacExpr1.Fail          = <fail<OptNatural><OptMsgTokens>>
   TacExpr1.Fresh         = <fresh<OptString>>
@@ -60,7 +60,7 @@ templates
   TacExpr1               = <<TAtom>>
   TacExpr1               = <(<TExpr>)> {bracket}
 
-templates // Options
+context-free syntax // Options
   
   OptRec.None = <>
   OptRec.Rec  = < rec>
@@ -77,7 +77,7 @@ templates // Options
   OptTerm.None = <>
   OptTerm      = <<Term>>
   
-templates
+context-free syntax
 
 	TAtom      = <<QualId>>
 	TAtom      = <<Num>>
@@ -88,34 +88,34 @@ template options
 
   tokenize: "()"
 
-templates
+context-free syntax
 
   MsgToken = <<String>>
   MsgToken = <<Ident>>
   MsgToken = <<Num>>
 
-templates
+context-free syntax
 
   TacArg         = <<QualId>>
   TacArg.Unit    = <()>
   TacArg.AtomArg = <ltac : <TAtom>>
   TacArg         = <<Term>>
 
-templates
+context-free syntax
 
   LetClause.LetClause = <<Ident><OptNames> := <TExpr>>
   OptNames.None = <>
   OptNames      = < <Name+>>
   
-templates
+context-free syntax
 
   ContextRule.PatContext = [[OptContextHyps]|- [Pattern] => [TExpr]]
   ContextRule.WldContext = [_ => [TExpr]]
   
   OptContextHyps.None = <>
-  OptContextHyps      = <<ContextHyp+; separator=", "> >
+  OptContextHyps      = <<{ContextHyp ", "}+> >
 
-templates
+context-free syntax
 
   ContextHyp.ContextHyp       = <<Name> : <Pattern>>
   ContextHyp.ContextHypAssign = <<Name> := <Pattern><OptCPattern>>
@@ -123,7 +123,7 @@ templates
   OptCPattern.None        = <>
   OptCPattern.OptCPattern = < : <Pattern>>
 
-templates
+context-free syntax
 
   MatchRule.MatchPattern    = [[Pattern] => [TExpr]]
   MatchRule.MatchContext    = [context[OptIdent][OptPattern] => [TExpr]]
@@ -136,7 +136,7 @@ templates
   OptPattern.None = <>
   OptPattern      = < <Pattern>>
   
-templates
+context-free syntax
 
   RedExpr.RedRed     = <red>
   RedExpr.RedHnf     = <hnf>

@@ -4,7 +4,7 @@ imports
   Lexical
   Gallina
 
-templates // Options
+context-free syntax // Options
 
   OptType.None         = <>
   OptType              = < : <Term>>
@@ -22,10 +22,10 @@ templates // Options
   OptReturnType        = < <ReturnType>>
   
   OptBinders.None      = <>
-  OptBinders           = < <Binder+; separator=" ">>
+  OptBinders           = < <{Binder " "}+>>
   
   OptTerms.None        = <>
-  OptTerms             = < <Term+; separator=" ">>
+  OptTerms             = < <{Term " "}+>>
   
   OptSort.None         = <>
   OptSort              = < : <Sort>>
@@ -33,10 +33,10 @@ templates // Options
   OptAnnotation.None  = <>
   OptAnnotation.Anno  = < { struct <Ident> }>
   
-templates // 2.1 Introduced for records:
+context-free syntax // 2.1 Introduced for records:
 
   OptIdents.None       = <>
-  OptIdents            = < <Ident+; separator=" ">>
+  OptIdents            = < <{Ident " "}+>>
   
   OptWhereNotation.None = <>
-  OptWhereNotation      = < where <Notation+; separator=" where">>
+  OptWhereNotation      = < where <{Notation " where"}+>> 

@@ -6,7 +6,7 @@ imports
   Options
   extensions/Function
 
-templates // Figure 1.1 of the reference manual 
+context-free syntax // Figure 1.1 of the reference manual 
  
 	Term.ForAll   = <forall <Binder+>, <Term>>
 	Term.Fun      = [fun [Binder+] => [Term]]
@@ -20,7 +20,7 @@ templates // Figure 1.1 of the reference manual
 	>
 	Term.LetFix   = <let fix <FixBody> in <Term>>
 	Term.LetCoFix = <let fix <CoFixBody> in <Term>>
-	Term.LetTuple = <let (<Name*; separator=", ">)<OptDepRetType> := <Term> in <Term>>
+	Term.LetTuple = <let (<{Name ", "}*>)<OptDepRetType> := <Term> in <Term>>
 	Term.LetPat   = <let <SingleQuote> <Pattern><OptInTerm> := <Term><OptReturnType> in <Term>>
 	Term.If       = <if <Term><OptDepRetType> then <Term> else <Term>>
 		
@@ -37,7 +37,7 @@ templates // Figure 1.1 of the reference manual
   Term.ScopeRef = <<Term> % <Ident>>
 	 
   Term.Match    = <
-  match <MatchItem+; separator=", "><OptReturnType> with
+  match <{MatchItem ", "}+><OptReturnType> with
     <Equations> end
   >
   
@@ -48,48 +48,48 @@ templates // Figure 1.1 of the reference manual
 
   Term          = <(<Term>)> {bracket}
 
-templates
+context-free syntax
 
   Arg.ImplicitArg = <(<Ident> := <Term>)>
 
-templates
+context-free syntax
 
   Binder.Bind   = <<Name>>
-  Binder.Binds  = <(<Name+; separator=" ">: <Term>)>
+  Binder.Binds  = <(<{Name " "}+>: <Term>)>
   Binder.Assign = <(<Name><OptType> := <Term>)>
 
-templates
+context-free syntax
 
   Name          = <<Ident>>
   Name.WldName  = <_>
   
-templates
+context-free syntax
 	
 	Sort.Prop     = <Prop>
 	Sort.Set      = <Set>
 	Sort.Type     = <Type>
 
-templates // Auxiliary definitions of figure 1.1
+context-free syntax // Auxiliary definitions of figure 1.1
 
   Equations.ListEqBar  = <
-  | <Equation+; separator = "| ">
+  | <{Equation "| "}+>
   >
   Equations.ListEq     = <
-  <Equation+; separator = "| ">
+  <{Equation "| "}+>
   >
   
-templates // Figure 1.2 of the reference manual
+context-free syntax // Figure 1.2 of the reference manual
 
 	FixBodies           = <<FixBody>>
- 	FixBodies.With      = <<FixBody> with <FixBody+; separator="with "> for <Ident>>
+ 	FixBodies.With      = <<FixBody> with <{FixBody "with "}+> for <Ident>>
 
 	FixBody.FixBody     = <
-	<Ident> <Binder+; separator=" "><OptAnnotation><OptType> :=
+	<Ident> <{Binder " "}+><OptAnnotation><OptType> :=
 		<Term>
 	>
 
 	CoFixBodies         = <<CoFixBody>>
- 	CoFixBodies.With    = <<CoFixBody> with <CoFixBody+; separator="with "> for <Ident>>
+ 	CoFixBodies.With    = <<CoFixBody> with <{CoFixBody "with "}+> for <Ident>>
 
 	CoFixBody.CoFixBody =	<<Ident><OptBinders><OptType> := <Term>>
 	
@@ -98,37 +98,37 @@ templates // Figure 1.2 of the reference manual
 	ReturnType.Return    = <return <Term>>
 
 	Equation.Eq        = [
-  [MultPattern+; separator=" | "] => [Term]
+  [{MultPattern " | "}+] => [Term]
   
   ]
 	
-	MultPattern        = <<Pattern+; separator=", ">>
+	MultPattern        = <<{Pattern ", "}+>>
 	
-	Pattern.QidPattern = <<QualId> <Pattern+; separator=" ">>
+	Pattern.QidPattern = <<QualId> <{Pattern " "}+>>
 	Pattern.AsPattern  = <<Pattern> as <Ident>>
 	Pattern.XPattern   = <<Pattern> % <Ident>>
 	Pattern            = <<QualId>>
 	Pattern.Wld        = <_>
 	Pattern            = <<Num>>
-	Pattern.OrPattern  = <(<OrPattern+; separator=", ">)>
+	Pattern.OrPattern  = <(<{OrPattern ", "}+>)>
 	
-	OrPattern          = <<Pattern+; separator=" | ">>
+	OrPattern          = <<{Pattern " | "}+>>
 	
-templates // Common notational extensions
+context-free syntax // Common notational extensions
 
-  Term.List  = <[<Term*; separator=";">]>
-  Term.Tuple = <(<Term>,<Term+; separator=",">)>
+  Term.List  = <[<{Term ";"}*>]> 
+  Term.Tuple = <(<Term>,<{Term ","}+>)> 
   
   Term.Prod  = <<Term> * <Term>>  {left}
   Term.Eq    = <<Term> = <Term>>  {non-assoc}
   Term.NotE  = [[Term] <> [Term]] {non-assoc}
-  Term.And   = <<Term> /\ <Term>>
+  Term.And   = <<Term> /\\ <Term>>
 
 context-free priorities
 
   Term.ForAll > Term.Apply > Term.Arrow > Term.Prod > {non-assoc: Term.Check Term.Cast Term.Coerce Term.Eq Term.NotE} > Term.And
 
-templates // 2.1 Used in records:
+context-free syntax // 2.1 Used in records:
 
   Type = <<Term>>
 

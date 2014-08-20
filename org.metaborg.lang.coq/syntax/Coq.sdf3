@@ -10,11 +10,11 @@ imports
   
 context-free start-symbols Start
 
-templates
+context-free syntax
 
-	Start = <<CoqFile*; separator="\n\n">>
+	Start = <<{CoqFile "\n\n"}*>>
 
-templates
+context-free syntax
 
   CoqFile = <<Sentence>> 
   CoqFile = <<Module>>

@@ -13,3 +13,4 @@ syntax/extensions/*.generated.*
 trans/*.generated.*
 utils
 .settings/org.eclipse.jdt.core.prefs
+src-gen/*

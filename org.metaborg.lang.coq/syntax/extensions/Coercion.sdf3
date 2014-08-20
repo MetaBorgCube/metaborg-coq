@@ -4,7 +4,7 @@ imports
   Qid
   Gallina
 
-templates
+context-free syntax
 
   Sentence.Coercion = [
   Coercion [QualId] : [Class] >-> [Class].
@@ -14,7 +14,7 @@ lexical syntax
 
   Reserved = "Coercion"
 
-templates
+context-free syntax
 
   // We accept any term, although only three cases are possible:
   // Sortclass, the class of sorts; its objects are the terms whose type is a sort.
