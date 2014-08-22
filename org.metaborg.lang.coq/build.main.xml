@@ -2,6 +2,7 @@
 <project name="Coq" default="all">
   
   <!-- Key input modules -->
+	<property name="language" value="Coq"/>
   <property name="sdfmodule" value="Coq"/>
   <property name="metasdfmodule" value="Stratego-Coq"/>
   <property name="esvmodule" value="Coq"/>
@@ -18,6 +19,8 @@
   <property name="build" location="bin"/>
   <property name="dist" location="bin/dist"/>
   <property name="pp" location="src-gen/pp" />
+	<property name="pack.tmp" value="pack.tmp" />
+  <property name="pack.tmp.loc" location="src-gen/${pack.tmp}" />
   <property name="signatures" location="src-gen/signatures" />
   
   <!-- Imports -->
@@ -43,34 +46,28 @@
   <property name="build.strategoxt.stratego" location="${user.home}/.nix-profile/bin"/>
 		
 	<!-- used for building inside of Eclipse -->
-    <import file="build.generated.xml"/>   
+  <import file="build.generated.xml"/>   
 
   <!-- Main target -->
-  <target name="all" depends="spoofaximp.default.ctree,coq-pp.jar"/>
-
+  <target name="all">
+  	<antcall target="copy-sdf2" />
+  	<antcall target="spoofaximp.default.ctree" />
+  	<antcall target="coq-pp.jar" />
+  </target>
 
   <!-- Copy target -->
   <target name="copy-to-project">
   	<!-- Copying files -->
-  	<copy overwrite="yes" todir="${basedir}/../../${dstproj}/trans/coq-semantics/syntax/">
-  		<fileset dir="${basedir}/trans/">
-        <include name="*.pp.generated.str"/>
-        <exclude name="CoqMix.pp.generated.str"/>
-      </fileset>
-  		<filterchain>
-        <replaceregex pattern=".generated" replace=".generated${line.separator}imports${line.separator}  trans/coq-semantics/syntax/-${line.separator}  libstratego-gpp${line.separator}  lib/runtime/tmpl/pp" flags="gi"/>
-        <replaceregex pattern="prettyprint-" replace="prettyprintCoq-" flags="gi"/>
-  	  </filterchain>
-  	</copy>
-    <copy overwrite="yes" file="${basedir}/include/Coq.str"              todir="${basedir}/../../${dstproj}/trans/coq-semantics/syntax/" />
-    <copy overwrite="yes" file="${basedir}/include/Coq-parenthesize.str" todir="${basedir}/../../${dstproj}/trans/coq-semantics/">
-    	<filterchain>
-    		<replaceregex pattern="module include/Coq-parenthesize" replace = "module trans/coq-semantics/Coq-parenthesize" />
-    		<replaceregex pattern="include/Coq" replace="trans/coq-semantics/syntax/Coq" />
-    	</filterchain>
-    </copy>
-    <copy overwrite="yes" file="${basedir}/include/Stratego-Coq.def"     todir="${basedir}/../../${dstproj}/lib/Coq/" />
-    <copy overwrite="yes" file="${basedir}/include/Stratego-Coq.tbl"     todir="${basedir}/../../${dstproj}/include/" />
+  	<copy overwrite="yes" file="${basedir}/include/Coq-pp.jar"  todir="${basedir}/../../${dstproj}/include/" />
+    <unzip src="${basedir}/../../${dstproj}/include/Coq-pp.jar" dest="${basedir}/../../${dstproj}/include/">
+    	<patternset>
+    	  <include name="**/pplib/Main.rtree" />
+    	</patternset>
+    </unzip>
+  	<move file="${basedir}/../../${dstproj}/include/pplib/Main.rtree" tofile="${basedir}/../../${dstproj}/include/Coq-pp.rtree" />
+  	<delete dir="${basedir}/../../${dstproj}/include/pplib/" />
+    <copy overwrite="yes" file="${basedir}/include/Stratego-Coq.def" todir="${basedir}/../../${dstproj}/include/" />
+    <copy overwrite="yes" file="${basedir}/include/Stratego-Coq.tbl" todir="${basedir}/../../${dstproj}/include/" />
   </target>
 	
   <target name="copy-to-sdf">
@@ -110,21 +107,51 @@
     <available file="${src-gen}/pplib/Main.java" property="pp-java.available" />
     <antcall target="pp.jar.deletehelper" />
     
-    <strj input="${pp}/${ppmodule}.str" output="${src-gen}/pplib/Main.java" package="trans">
-          <strjargs> 
-            <arg value="--clean" />
-            <arg line="${build.stratego.args}" />
-            <arg line="${externaljarflags}" />
-            <arg line="${externaldefimport}" />
-            <arg line="-I &quot;${lib}&quot; -I &quot;${include}&quot; --cache-dir &quot;${basedir}/.cache&quot;" />
-            <arg value="--library" />
-          </strjargs>
-          <str-deps>
-            <srcfiles dir="${pp}" includes="**/*.str" />
-            <srcfiles dir="${signatures}" includes="**/*.str" />
-          </str-deps>
-        </strj>
-    <mkdir dir="${build}/pplib" />
+  	<!-- Copying files so we can rename the strategies properly. (TODO) -->
+    <copy overwrite="yes" todir="${pack.tmp.loc}/pp">
+      <fileset dir="${pp}">
+        <include name="**/*.str" />
+      </fileset>
+      <filterchain>
+        <replaceregex pattern="src-gen" replace="src-gen/${pack.tmp}" flags="gi"/>
+        <replaceregex pattern="prettyprint-" replace="prettyprint${language}-" flags="gi"/>
+      </filterchain>
+    </copy>
+    <copy overwrite="yes" todir="${pack.tmp.loc}/signatures">
+      <fileset dir="${signatures}">
+        <include name="**/*.str" />
+      </fileset>
+      <filterchain>
+        <replaceregex pattern="src-gen" replace="src-gen/${pack.tmp}" flags="gi"/>
+      </filterchain>
+    </copy>
+    <copy overwrite="yes" file="${include}/${language}-parenthesize.str" todir="${pack.tmp.loc}">
+      <filterchain>
+        <replaceregex pattern="module include/${language}-parenthesize" replace = "module ${pack.tmp}/${language}-parenthesize" />
+      </filterchain>
+    </copy>
+  	<echo file="${pack.tmp.loc}/Main.str">
+module ${pack.tmp}/Main
+imports
+  	  src-gen/${pack.tmp}/-
+  		src-gen/${pack.tmp}/pp/-
+  		src-gen/${pack.tmp}/signatures/-
+  	</echo>
+
+    <strj input="${pack.tmp.loc}/Main.str" output="${src-gen}/pplib/Main.java" package="pplib">
+      <strjargs> 
+        <arg value="--clean" />
+        <arg line="${build.stratego.args}" />
+        <arg line="${externaljarflags}" />
+        <arg line="${externaldefimport}" />
+        <arg line="-I &quot;${lib}&quot; -I &quot;${include}&quot; --cache-dir &quot;${basedir}/.cache&quot;" />
+        <arg value="--library" />
+      </strjargs>
+      <str-deps>
+        <srcfiles dir="${pack.tmp.loc}"     includes="**/*.str" />
+      </str-deps>
+    </strj>
+  	<mkdir dir="${build}/pplib" />
     
     <sequential>
       <uptodate-mio input="${src-gen}/pplib/Main.java" output="${include}/${ppmodule}.jar" type="javac">
@@ -141,9 +168,9 @@
           <!--copy file="${src-gen}/pplib/Main.rtree" tofile="${pp}/${ppmodule}.rtree" /-->
           <jar basedir="${build}" includes="pplib/**" destfile="${include}/${ppmodule}.tmp.jar" />
           <move file="${include}/${ppmodule}.tmp.jar" tofile="${include}/${ppmodule}.jar" />
-            <delete>
-            <fileset dir="${build}" includes="pplib/**" />
-          </delete> 
+        	<delete>
+        	  <fileset dir="${build}" includes="pplib/**" />
+        	</delete> 
         </action>
         <deps>
           <srcfiles dir="${src-gen}/pplib/" includes="**/*.java" />
@@ -153,15 +180,18 @@
   </target>
 
 	<taskdef classpath="${eclipse.spoofaximp.strategojar}" resource="org/strategoxt/antcontrib/strategoxt-antlib.xml"/>
-
 	<taskdef classpath="${eclipse.spoofaximp.strategojar}" resource="net/sf/antcontrib/antlib.xml"/>
 	
 	<target name="pp.jar.deletehelper" unless="pp-java.available">
-	  <delete>
-	    <fileset dir="${src-gen}" includes="pplib/**" />
-      <fileset dir="${build}" includes="pplib/**" />
-      <!-- fileset dir="${pp}" includes="${ppmodule}.rtree" /-->
-    </delete>
+    <fileset dir="${src-gen}" includes="pplib/**" />
+    <fileset dir="${build}"   includes="pplib/**" />
+    <!-- fileset dir="${pp}" includes="${ppmodule}.rtree" /-->
+  </target>
+	
+	 <target name="copy-sdf2">
+    <copy todir="src-gen/syntax" preservelastmodified="yes">
+      <fileset dir="${basedir}/syntax" includes="**/*.sdf"/>
+    </copy>
   </target>
 </project>
 
