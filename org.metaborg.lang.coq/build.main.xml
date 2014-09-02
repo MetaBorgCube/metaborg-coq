@@ -57,16 +57,32 @@
 
   <!-- Copy target -->
   <target name="copy-to-project">
-  	<!-- Copying files -->
-  	<copy overwrite="yes" file="${basedir}/include/Coq-pp.jar"  todir="${basedir}/../../${dstproj}/include/" />
+  	<!-- <copy overwrite="yes" file="${basedir}/include/Coq-pp.jar"  todir="${basedir}/../../${dstproj}/include/" />
     <unzip src="${basedir}/../../${dstproj}/include/Coq-pp.jar" dest="${basedir}/../../${dstproj}/include/">
     	<patternset>
     	  <include name="**/pplib/Main.rtree" />
     	</patternset>
     </unzip>
   	<move file="${basedir}/../../${dstproj}/include/pplib/Main.rtree" tofile="${basedir}/../../${dstproj}/include/Coq-pp.rtree" />
-  	<delete dir="${basedir}/../../${dstproj}/include/pplib/" />
-    <copy overwrite="yes" file="${basedir}/include/Stratego-Coq.def" todir="${basedir}/../../${dstproj}/include/" />
+  	<delete dir="${basedir}/../../${dstproj}/include/pplib/" /> -->
+    
+  	<!-- Temporary while we don't fix the jar generation. -->
+  	<copy overwrite="yes" todir="${basedir}/../../${dstproj}/include/Coq/">
+      <fileset dir="${signatures}/../" includes="signatures/**/*.str" />
+      <fileset dir="${pp}/../" includes="pp/**/*.str" />
+  	  <filterchain>
+  	  	<replaceregex pattern="src-gen" replace="include/Coq" flags="gi" />
+  	  	<replaceregex pattern="prettyprint-" replace="prettyprintCoq-" flags="gi" />
+  	  </filterchain>
+  	</copy>
+  	<copy overwrite="yes" file="${include}/Coq-parenthesize.str" todir="${basedir}/../../${dstproj}/include/Coq/">
+  	  <filterchain>
+  	    <replaceregex pattern="module include/Coq-parenthesize" replace = "module include/Coq/Coq-parenthesize" />
+  	  	<replaceregex pattern="  include/Coq" replace="  include/Coq/signatures/- include/Coq/signatures/tactic/-" />
+	    </filterchain>
+	  </copy>
+  	
+  	<copy overwrite="yes" file="${basedir}/include/Stratego-Coq.def" todir="${basedir}/../../${dstproj}/include/" />
     <copy overwrite="yes" file="${basedir}/include/Stratego-Coq.tbl" todir="${basedir}/../../${dstproj}/include/" />
   </target>
 	
