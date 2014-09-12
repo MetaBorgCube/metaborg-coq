@@ -2,28 +2,28 @@ module mix/CoqMix[E]
 
 imports
   Coq
+  Gallina
+  Vernacular
+  
   
 exports
+  variables
+    "term"  [a-z0-9\-\_\']+ -> Term      {prefer}
+    "decl"  [a-z0-9\-\_\']+ -> ConsDecls {prefer}
+    "sent"  [a-z0-9\-\_\']+ -> Sentence  {prefer}
+    "ident" [a-z0-9\-\_\']+ -> Ident     {prefer}
+
   context-free syntax
-    "T" "|[" Term     "]|" -> E {cons("ToMetaExpr")}
-    "C" "|[" CoqFile* "]|" -> E {cons("ToMetaExpr")}
+    "T" "|[" Term      "]|" -> E {cons("ToMetaExpr")}
+    "S" "|[" Sentence  "]|" -> E {cons("ToMetaExpr")}
+        "|[" TopLevel* "]|" -> E {cons("ToMetaListExpr")}
 
-variables
-
-  T                 -> Term      {prefer}
-  D                 -> ConsDecls {prefer}
-  "decl" [0-9]* "*" -> ConsDecl* {prefer}
+  lexical syntax
+    "term"  [a-z0-9\-\_\']+ -> Ident {reject}
+    "decl"  [a-z0-9\-\_\']+ -> Ident {reject}
+    "sent"  [a-z0-9\-\_\']+ -> Ident {reject}
+    "ident" [a-z0-9\-\_\']+ -> Ident {reject}
   
-lexical syntax
-	
-  ("x"|"y"|"t") [0-9]* "'"* -> T
-  "env" [0-9]* "'"*         -> T
-  "k" [0-9]* "'"*           -> T
   
-  "decls" [0-9]* -> D
-  
-lexical restrictions
-	
-	T -/- [a-zA-Z0-9\_\']
-	D -/- [a-zA-Z0-9\_\']
-  
+context-free restrictions
+  Term   -/- [\_a-z0-9\']

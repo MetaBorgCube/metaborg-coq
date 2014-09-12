@@ -46,16 +46,16 @@ context-free syntax
   ModuleType.QualifiedModuleBangSeq = <!<QualId> <QualId+>>
   ModuleType                        = <(<ModuleType>)> {bracket}
   
-  OptModuleTypes.None = <>
-  OptModuleTypes      = < : <ModuleType>>
-  OptModuleTypes      = [ <: [{ModuleType " <:"}*]]
+  OptModuleTypes.None             = <>
+  OptModuleTypes.ModType          = < : <ModuleType>>
+  OptModuleTypes.ModSubtypes      = [ <: [{ModuleType " <:"}*]]
   
 context-free syntax
 
   ModuleBinding.ModuleBinding = <(<OptModuleBindingKeywordPrefix><Ident+> <ModuleType>)>
   
-  OptModuleBindings.None = <>
-  OptModuleBindings      = < <{ModuleBinding " "}+>>
+  OptModuleBindings.None        = <>
+  OptModuleBindings.ModBindings = < <{ModuleBinding " "}+>>
 
 context-free syntax // Encoding elements valid inside modules only
 
@@ -103,5 +103,5 @@ context-free syntax // Imports (2.5.8)
   
 context-free syntax
 
-  OptRequirePrefix.None = <>
-  OptRequirePrefix      = <Require >
+  OptRequirePrefix.None    = <>
+  OptRequirePrefix.Require = <Require >

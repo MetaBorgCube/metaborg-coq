@@ -13,7 +13,7 @@ language General properties
                   
   extensions    : v
   table         : include/Coq.tbl
-  start symbols : Start
+  start symbols : CoqFile
   provider      : include/coq.ctree
   observer      : editor-analyze (multifile)
   

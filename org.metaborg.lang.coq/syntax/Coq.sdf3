@@ -8,13 +8,13 @@ imports
   extensions/Section
   tactic/Toplevel
   
-context-free start-symbols Start
+context-free start-symbols CoqFile
 
 context-free syntax
 
-	Start = <<{CoqFile "\n\n"}*>>
+	CoqFile = <<{TopLevel "\n\n"}*>>
 
 context-free syntax
 
-  CoqFile = <<Sentence>> 
-  CoqFile = <<Module>>
+  TopLevel = <<Sentence>> 
+  TopLevel = <<Module>>
