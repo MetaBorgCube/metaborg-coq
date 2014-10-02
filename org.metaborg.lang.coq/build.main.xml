@@ -2,7 +2,6 @@
 <project name="Coq" default="all">
   
   <!-- Key input modules -->
-	<property name="language" value="Coq"/>
   <property name="sdfmodule" value="Coq"/>
   <property name="metasdfmodule" value="Stratego-Coq"/>
   <property name="esvmodule" value="Coq"/>
@@ -11,17 +10,21 @@
   <property name="sigmodule" value="Coq-sig" />
 
   <!-- Project directories -->
-  <property name="trans" location="trans"/>
-  <property name="src-gen" location="editor/java"/>
-  <property name="syntax" location="src-gen/syntax"/>
-  <property name="include" location="include"/>
-  <property name="lib" location="lib"/>
-  <property name="build" location="bin"/>
-  <property name="dist" location="bin/dist"/>
-  <property name="pp" location="src-gen/pp" />
-	<property name="pack.tmp" value="pack.tmp" />
-  <property name="pack.tmp.loc" location="src-gen/${pack.tmp}" />
-  <property name="signatures" location="src-gen/signatures" />
+  <property location="trans" name="trans" />
+  <property location="editor/java" name="src-gen" />
+  <property location="include" name="include" />
+  <property location="lib" name="lib" />
+  <property location="target/classes" name="build" />
+  <property location="bin/dist" name="dist" />
+  <property name="sdf-src-gen" location="src-gen" />
+  <property name="pp" location="${sdf-src-gen}/pp" />
+  <property name="signatures" location="${sdf-src-gen}/signatures" />
+  <property name="syntax" location="${sdf-src-gen}/syntax" />
+  <property name="lib-gen" location="${include}" />
+  <property name="syntax.rel" location="${syntax}" relative="yes" />
+  <property name="trans.rel" location="trans" relative="yes" />
+  <property name="include.rel" location="${include}" relative="yes" />
+  <property name="lib-gen.rel" location="${lib-gen}" relative="yes" />
   
   <!-- Imports -->
   <property name="build.sdf.imports" value="
@@ -44,16 +47,13 @@
       <isset property="eclipse.spoofaximp.nativeprefix"/>
   </condition>
   <property name="build.strategoxt.stratego" location="${user.home}/.nix-profile/bin"/>
+	<property name="nativepath" value="${eclipse.spoofaximp.nativeprefix}"/>   
 		
 	<!-- used for building inside of Eclipse -->
   <import file="build.generated.xml"/>   
 
   <!-- Main target -->
-  <target name="all">
-  	<antcall target="copy-sdf2" />
-  	<antcall target="spoofaximp.default.ctree" />
-  	<antcall target="coq-pp.jar" />
-  </target>
+  <target name="all" depends="spoofaximp.default.ctree" />
 
   <!-- Copy target -->
   <target name="copy-to-project">
@@ -103,7 +103,7 @@
   </target>
 	<target name="copy-to-dynsem">
 	  <antcall target="copy-to-project">
-	    <param name="dstproj" value="dynsem"/>
+	    <param name="dstproj" value="dynsem/dynsem"/>
     </antcall>
   </target>
 	
@@ -152,19 +152,24 @@ imports
   	  src-gen/${pack.tmp}/-
   		src-gen/${pack.tmp}/pp/-
   		src-gen/${pack.tmp}/signatures/-
-  	</echo>
 
+  		strategies
+  		ignore = parenthesize-Coq
+  	
+      ignore2 = prettyprintCoq-Start
+  	</echo>
+  	
     <strj input="${pack.tmp.loc}/Main.str" output="${src-gen}/pplib/Main.java" package="pplib">
       <strjargs> 
         <arg value="--clean" />
-        <arg line="${build.stratego.args}" />
+        <!-- arg line="${build.stratego.args}" / -->
         <arg line="${externaljarflags}" />
-        <arg line="${externaldefimport}" />
+        <!-- arg line="${externaldefimport}" / -->
         <arg line="-I &quot;${lib}&quot; -I &quot;${include}&quot; --cache-dir &quot;${basedir}/.cache&quot;" />
-        <arg value="--library" />
+        <arg line="--library -I &quot;${trans}&quot; -I &quot;${basedir}&quot; -la stratego-lib -la stratego-gpp" />
       </strjargs>
       <str-deps>
-        <srcfiles dir="${pack.tmp.loc}"     includes="**/*.str" />
+        <srcfiles dir="${pack.tmp.loc}"  includes="**/*.str" />
       </str-deps>
     </strj>
   	<mkdir dir="${build}/pplib" />
@@ -179,14 +184,18 @@ imports
           </javac>
           <!-- copy imported terms -->
           <copy todir="${build}/pplib">
-              <fileset dir="${src-gen}/pplib" excludes="**/*.java" />
+            <fileset dir="${src-gen}/pplib" excludes="**/*.java" />
+            <!-- filterchain>
+              <replaceregex pattern='ExtSDef\("(pp-one|pp-option).*\),ExtSDef' replace="ExtSDef" flags="gi"/>
+            </filterchain -->
           </copy>
           <!--copy file="${src-gen}/pplib/Main.rtree" tofile="${pp}/${ppmodule}.rtree" /-->
-          <jar basedir="${build}" includes="pplib/**" destfile="${include}/${ppmodule}.tmp.jar" />
+          <jar basedir="${build}" includes="pplib/**" destfile="${include}/${ppmodule}.tmp.jar"
+          excludes="pplib/pp_one*|pplib/pp_option*" />
           <move file="${include}/${ppmodule}.tmp.jar" tofile="${include}/${ppmodule}.jar" />
         	<delete>
         	  <fileset dir="${build}" includes="pplib/**" />
-        	</delete> 
+        	</delete>
         </action>
         <deps>
           <srcfiles dir="${src-gen}/pplib/" includes="**/*.java" />
@@ -202,12 +211,6 @@ imports
     <fileset dir="${src-gen}" includes="pplib/**" />
     <fileset dir="${build}"   includes="pplib/**" />
     <!-- fileset dir="${pp}" includes="${ppmodule}.rtree" /-->
-  </target>
-	
-	 <target name="copy-sdf2">
-    <copy todir="src-gen/syntax" preservelastmodified="yes">
-      <fileset dir="${basedir}/syntax" includes="**/*.sdf"/>
-    </copy>
   </target>
 </project>
 
