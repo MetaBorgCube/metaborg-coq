@@ -28,7 +28,7 @@
   
   <!-- Imports -->
   <property name="build.sdf.imports" value="
-  	-I &quot;${basedir}/syntax/mix&quot;
+  	-I &quot;${syntax.rel}/mix&quot;
   	"/>
   <property name="build.stratego.args" value="
                   --library
@@ -67,23 +67,23 @@
   	<delete dir="${basedir}/../../${dstproj}/include/pplib/" /> -->
     
   	<!-- Temporary while we don't fix the jar generation. -->
-  	<copy overwrite="yes" todir="${basedir}/../../${dstproj}/include/Coq/">
+  	<copy overwrite="yes" todir="${basedir}/../../${dstproj}/lib/Coq/">
       <fileset dir="${signatures}/../" includes="signatures/**/*.str" />
       <fileset dir="${pp}/../" includes="pp/**/*.str" />
   	  <filterchain>
-  	  	<replaceregex pattern="src-gen" replace="include/Coq" flags="gi" />
+  	  	<replaceregex pattern="src-gen" replace="lib/Coq" flags="gi" />
   	  	<replaceregex pattern="prettyprint-" replace="prettyprintCoq-" flags="gi" />
   	  </filterchain>
   	</copy>
-  	<copy overwrite="yes" file="${include}/Coq-parenthesize.str" todir="${basedir}/../../${dstproj}/include/Coq/">
+  	<copy overwrite="yes" todir="${basedir}/../../${dstproj}/lib/Coq/">
+  	  <fileset file="${include}/Coq-parenthesize.str"/>
+      <fileset file="${include}/Stratego-Coq.def"/>
   	  <filterchain>
-  	    <replaceregex pattern="module include/Coq-parenthesize" replace = "module include/Coq/Coq-parenthesize" />
-  	  	<replaceregex pattern="  include/Coq" replace="  include/Coq/signatures/- include/Coq/signatures/tactic/-" />
+  	    <replaceregex pattern="module lib/Coq-parenthesize" replace = "module lib/Coq/Coq-parenthesize" />
+  	  	<replaceregex pattern="  include/Coq" replace="  lib/Coq/signatures/- lib/Coq/signatures/tactic/-" />
 	    </filterchain>
 	  </copy>
-  	
-  	<copy overwrite="yes" file="${basedir}/include/Stratego-Coq.def" todir="${basedir}/../../${dstproj}/include/" />
-    <copy overwrite="yes" file="${basedir}/include/Stratego-Coq.tbl" todir="${basedir}/../../${dstproj}/include/" />
+  	<copy overwrite="yes" todir="${basedir}/../../${dstproj}/include/" file="${include}/Stratego-Coq.tbl" />
   </target>
 	
   <target name="copy-to-sdf">
