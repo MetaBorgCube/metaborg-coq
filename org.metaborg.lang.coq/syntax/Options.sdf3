@@ -7,10 +7,10 @@ imports
 context-free syntax // Options
 
   OptType.None         = <>
-  OptType              = < : <Term>>
+  OptType.OptType      = < : <Term>>
   
   OptInTerm.None       = <>
-  OptInTerm            = < in <Term>>
+  OptInTerm.OptInTerm  = < in <Term>>
   
   OptDepRetType.None   = <>
   OptDepRetType.DepRet = <<OptAlias> <ReturnType>>
@@ -19,16 +19,16 @@ context-free syntax // Options
   OptAlias.As          = < as <Name>>
   
   OptReturnType.None   = <>
-  OptReturnType        = < <ReturnType>>
+  OptReturnType.OptReturnType = < <ReturnType>>
   
   OptBinders.None      = <>
-  OptBinders           = < <{Binder " "}+>>
+  OptBinders.OptBinders = < <{Binder " "}+>>
   
   OptTerms.None        = <>
-  OptTerms             = < <{Term " "}+>>
+  OptTerms.OptTerms    = < <{Term " "}+>>
   
   OptSort.None         = <>
-  OptSort              = < : <Sort>>
+  OptSort.OptSort      = < : <Sort>>
   
   OptAnnotation.None  = <>
   OptAnnotation.Anno  = < { struct <Ident> }>
@@ -36,7 +36,7 @@ context-free syntax // Options
 context-free syntax // 2.1 Introduced for records:
 
   OptIdents.None       = <>
-  OptIdents            = < <{Ident " "}+>>
+  OptIdents.OptIdents  = < <{Ident " "}+>>
   
   OptWhereNotation.None = <>
-  OptWhereNotation      = < where <{Notation " where"}+>> 
+  OptWhereNotation.OptWhereNotation = < where <{Notation " where"}+>> 
