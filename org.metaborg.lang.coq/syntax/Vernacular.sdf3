@@ -20,6 +20,17 @@ context-free syntax
   AssumptionKeyword.AssumptionVariables  = <Variables>
   AssumptionKeyword.AssumptionHypothesis = <Hypothesis>
   AssumptionKeyword.AssumptionHypotheses = <Hypotheses>
+  
+lexical syntax
+
+  Reserved = "Axiom"
+  Reserved = "Conjecture"
+  Reserved = "Parameter"
+  Reserved = "Parameters"
+  Reserved = "Variable"
+  Reserved = "Variables"
+  Reserved = "Hypothesis"
+  Reserved = "Hypotheses"
 
 context-free syntax
 
@@ -31,11 +42,17 @@ context-free syntax
   AssertionKeyword.AssertionProposition = <Proposition>
   AssertionKeyword.AssertionDefinition  = <Definition>
   AssertionKeyword.AssertionExample     = <Example>
-  
+
 lexical syntax
 
-  Reserved = AssumptionKeyword
-  Reserved = AssertionKeyword
+  Reserved = "Theorem"
+  Reserved = "Lemma"
+  Reserved = "Remark"
+  Reserved = "Fact"
+  Reserved = "Corollary"
+  Reserved = "Proposition"
+  Reserved = "Definition"
+  Reserved = "Example"
 
 context-free syntax // Figure 1.3 Syntax of sentences
 
