@@ -126,7 +126,26 @@ context-free syntax // Common notational extensions
 
 context-free priorities
 
-  Term.ForAll > Term.Apply > Term.Arrow > Term.Prod > {non-assoc: Term.Check Term.Cast Term.Coerce Term.Eq Term.NotE} > Term.And
+    Term.Match
+  > Term.ScopeRef
+  > Term.UnHide
+  > Term.Apply
+  > Term.Arrow
+  > Term.Coerce
+  > Term.Check
+  > Term.Cast
+  > Term.If
+  > Term.LetPat
+  > Term.LetTuple
+  > Term.LetCoFix
+  > Term.LetFix
+  > Term.Let
+  > Term.CoFix
+  > Term.Fix
+  > Term.Fun  
+  > Term.ForAll
+  > Term.Prod > {non-assoc: Term.Eq Term.NotE} > Term.And
+
 
 context-free syntax // 2.1 Used in records:
 
