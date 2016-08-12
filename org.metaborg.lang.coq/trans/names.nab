@@ -2,7 +2,9 @@ module names
 
 imports
 	
-	include/Coq
+//	signatures/Coq-sig
+//  signatures/extensions/-
+//  signatures/tactic/-
 	
 namespaces
 	

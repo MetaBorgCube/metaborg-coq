@@ -28,6 +28,10 @@ context-free syntax // Figure 1.1 of the reference manual
 	Term.Check    = [[Term] <: [Term]] {non-assoc}
 	Term.Coerce   = [[Term] :>]        {non-assoc}
 	Term.Arrow    = [[Term] -> [Term]] {right}
+	Term.ArrowLn  = [
+	  [Term] ->
+	  [Term]
+	]
 	
 	Term.Apply     = <<Term> <Term>> {left, prefer}
 	Term.ApplyImplicit = <<Term> <Arg>>
@@ -116,8 +120,8 @@ context-free syntax // Figure 1.2 of the reference manual
 	
 context-free syntax // Common notational extensions
 
-  Term.List  = <[<{Term ";"}*>]> 
-  Term.Tuple = <(<Term>,<{Term ","}+>)> 
+  Term.List  = <[<{Term "; "}*>]> 
+  Term.Tuple = <(<Term>, <{Term ", "}+>)> 
   
   Term.Prod  = <<Term> * <Term>>  {left}
   Term.Eq    = <<Term> = <Term>>  {non-assoc}

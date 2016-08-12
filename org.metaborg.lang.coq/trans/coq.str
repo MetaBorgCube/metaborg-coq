@@ -5,31 +5,29 @@ imports
 	libstratego-lib
 	libstratego-gpp
 	libstratego-aterm
-	include/Coq
-	include/Coq-parenthesize
-	lib/editor-common.generated
-	lib/runtime/analysis/-
-	lib/runtime/nabl/-
-	lib/runtime/task/-
-	lib/runtime/index/-
-  lib/runtime/tmpl/-
+	signatures/Coq-sig
+  signatures/extensions/-
+  signatures/tactic/-
+	pp/Coq-parenthesize
+	stratego/metaborg
+	runtime/analysis/-
+	runtime/nabl/-
+	runtime/task/-
+	runtime/index/-
+	runtime/tmpl/-
 	names
 	check
 	generate
 	sugar
-  editor/Coq-Outliner
   src-gen/pp/-
 
 rules // Analysis
 	
-  editor-analyze = analysis-default-editor
+	editor-analyze = analyze-all(id, id, id|<language>)
+  
+//  editor-analyze = analysis-default-editor
 
-  analysis-single-default-interface = 
-     analysis-single-default(id, id, id|<language>)
-  analysis-multiple-default-interface = 
-     analysis-multiple-default(parse-file <+ !(), id, id, id|<language>, <project-path>)
-     
-  editor-save = analysis-save-default(|<language>)
+//  editor-save = analysis-save-default(|<language>)
 
 rules // Editor services
   

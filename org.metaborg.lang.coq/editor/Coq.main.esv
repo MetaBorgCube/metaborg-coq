@@ -1,19 +1,11 @@
 module Coq.main
 
-imports Coq-Refactorings Coq-Colorer Coq-Completions Coq-Folding Coq-References Coq-Syntax Coq-Menus
+imports Coq-Colorer Coq-References Coq-Menus Coq-Views
 
 language General properties
-                  
-  name          : Coq
-  id            : org.metaborg.lang.coq
-  extends       : Root
-                  
-  description   : "Spoofax/IMP-generated editor for the Coq language"
-  url           : http://strategoxt.org
-                  
+
   extensions    : v
-  table         : include/Coq.tbl
+  table         : target/metaborg/sdf.tbl
   start symbols : CoqFile
-  provider      : include/coq.ctree
+  provider      : target/metaborg/stratego.ctree
   observer      : editor-analyze (multifile)
-  

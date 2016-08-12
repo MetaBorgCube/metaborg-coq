@@ -1,7 +1,5 @@
 module Coq-References
 
-imports Coq-References.generated
-
 references
                                                                                                    
   // This file can be used to specify reference resolving and hover help, and content completion.  

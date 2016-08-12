@@ -1,6 +1,9 @@
 module sugar
 
-imports include/Coq
+imports
+  signatures/Coq-sig
+  signatures/extensions/-
+  signatures/tactic/-
 
 strategies
   

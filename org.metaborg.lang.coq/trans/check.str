@@ -2,7 +2,9 @@ module check
 
 imports
 
-	include/Coq
+	signatures/Coq-sig
+  signatures/extensions/-
+  signatures/tactic/-
 
 rules // Extensions for error/warning/note reporting
 	

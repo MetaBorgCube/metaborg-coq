@@ -2,7 +2,9 @@ module generate
 
 imports
 	
-	include/Coq
+	signatures/Coq-sig
+  signatures/extensions/-
+  signatures/tactic/-
 
 rules 
 
