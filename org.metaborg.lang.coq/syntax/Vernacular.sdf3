@@ -100,7 +100,10 @@ context-free syntax // Inductive definitions
   >
 
   ConsDecls.ListDeclBar =  <| <{ConsDecl "| "}+>>
-  ConsDecls.ListDecl    =  <<{ConsDecl "| "}*>>   
+  ConsDecls.ListDecl    =  <<{ConsDecl "| "}+>>
+  ConsDecls.None        =  <
+  
+  >
 
   ConsDecl.ConsDecl =  <
   <Ident><OptBinders><OptType>
