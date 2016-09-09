@@ -5,11 +5,11 @@ imports
 	libstratego-lib
 	libstratego-gpp
 	libstratego-aterm
+	libspoofax/core/language
 	signatures/Coq-sig
   signatures/extensions/-
   signatures/tactic/-
 	pp/Coq-parenthesize
-	stratego/metaborg
 	runtime/analysis/-
 	runtime/nabl/-
 	runtime/task/-
