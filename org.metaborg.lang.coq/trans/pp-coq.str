@@ -1,0 +1,48 @@
+module pp-coq
+
+imports
+
+  libstratego-gpp
+  libspoofax/sdf/pp
+  libspoofax/editor/refactoring/-
+  pp/-
+
+rules
+
+  editor-format:
+    (node, _, ast, path, project-path) -> (filename, result)
+    with
+      ext      := <get-extension> path
+    ; filename := <guarantee-extension(|$[pp.[ext]])> path
+    ; result   := <pp-debug> node
+
+rules
+  
+  pp-Coq-string =
+    parenthesize-Coq
+    ; prettyprint-Coq-start-symbols
+    ; !V([], <id>)
+    ; box2text-string(|120)
+      
+  pp-partial-Coq-string =
+    parenthesize-Coq
+    ; prettyprint-Coq
+    ; !V([], <id>)
+    ; box2text-string(|120)
+    
+  pp-partial-Coq-string(|sort) =
+    parenthesize-Coq
+    ; prettyprint-Coq(|sort)
+    ; !V([], <id>)
+    ; box2text-string(|120)  
+      
+  pp-debug :
+    ast -> result
+    with
+       result := <pp-Coq-string> ast
+    <+ <bottomup(try(not(is-string); not(is-list); not(pp-Coq-string); debug(!"cannot pp ")))> ast
+    ;  result := ""
+
+rules
+  
+  construct-textual-change = construct-textual-change(pp-partial-Coq-string, parenthesize, override-reconstruction, resugar)

@@ -19,8 +19,9 @@ imports
 	check
 	generate
 	sugar
-  src-gen/pp/-
-
+  pp-coq
+  pp/-
+  
 rules // Analysis
 	
 	editor-analyze = analyze-all(id, id, id|<language>)
@@ -30,6 +31,8 @@ rules // Analysis
 //  editor-save = analysis-save-default(|<language>)
 
 rules // Editor services
+  
+  foo = pp-partial-Coq-string(|None()); pp-partial-Coq-string
   
   // Resolves a reference when the user control-clicks or presses F3 in the editor.
   editor-resolve:

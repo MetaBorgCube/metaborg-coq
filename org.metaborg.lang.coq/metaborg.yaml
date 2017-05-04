@@ -9,7 +9,10 @@ dependencies:
   - org.metaborg:meta.lib.spoofax:${metaborgVersion}
   - org.metaborg:org.metaborg.meta.lib.analysis:${metaborgVersion}
 exports:
-- language: Stratego-Sugar 
+- language: Stratego-Sugar
+  directory: trans
+  includes: "**/*.str"
+- language: Stratego-Sugar
   directory: src-gen
 pardonedLanguages:
 - EditorService
