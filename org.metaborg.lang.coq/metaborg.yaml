@@ -14,10 +14,6 @@ exports:
   includes: "**/*.str"
 - language: Stratego-Sugar
   directory: src-gen
-pardonedLanguages:
-- EditorService
-- Stratego-Sugar
-- SDF
 language:
   stratego:
     args:

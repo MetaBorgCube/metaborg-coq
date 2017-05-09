@@ -1,0 +1,8 @@
+module Colorer
+
+imports
+
+  libspoofax/color/default
+  completion/colorer/Coq-cc-esv
+
+colorer

@@ -9,6 +9,7 @@ imports
 	signatures/Coq-sig
   signatures/extensions/-
   signatures/tactic/-
+  completion/completion
 	pp/Coq-parenthesize
 	runtime/analysis/-
 	runtime/nabl/-
