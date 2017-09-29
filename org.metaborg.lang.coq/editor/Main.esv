@@ -1,6 +1,6 @@
 module Coq.main
 
-imports Coq-Colorer Coq-References Coq-Menus Coq-Views
+imports Colorer References Menus
 
 language General properties
 

@@ -1,4 +1,4 @@
-module Coq-Menus
+module Menus
 
   // This file can be used to specify toolbar menus.
   // See the imported file for a brief introduction and examples.
