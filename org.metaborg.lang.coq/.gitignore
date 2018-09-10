@@ -7,4 +7,6 @@
 /.project
 /.settings
 
+/.polyglot.metaborg.yaml
+
 /trans/Stratego-Coq.tbl
